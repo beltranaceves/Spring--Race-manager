@@ -1,4 +1,4 @@
-package es.udc.ws.util.json;
+package es.udc.ws.races.model.util.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

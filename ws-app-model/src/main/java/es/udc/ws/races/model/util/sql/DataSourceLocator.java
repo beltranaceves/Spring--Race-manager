@@ -1,4 +1,4 @@
-package es.udc.ws.util.sql;
+package es.udc.ws.races.model.util.sql;
 
 import java.util.Collections;
 import java.util.HashMap;

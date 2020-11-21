@@ -1,4 +1,4 @@
-package es.udc.ws.util.servlet;
+package es.udc.ws.races.model.util.servlet;
 
 import java.io.IOException;
 import java.io.InputStream;

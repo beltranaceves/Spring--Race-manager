@@ -1,4 +1,4 @@
-package es.udc.ws.util.sql;
+package es.udc.ws.races.model.util.sql;
 
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import java.io.PrintWriter;

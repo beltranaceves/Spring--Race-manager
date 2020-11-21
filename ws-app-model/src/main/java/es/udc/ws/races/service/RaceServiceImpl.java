@@ -1,5 +1,7 @@
 package es.udc.ws.races.service;
 
+import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
+
 import es.udc.ws.races.model.inscription.SqlInscriptionDao;
 import es.udc.ws.races.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.races.model.race.Race;
@@ -20,7 +22,7 @@ public class RaceServiceImpl implements RaceService{
     private SqlInscriptionDao inscriptionDao = null;
 
     public RaceServiceImpl() {
-        dataSource = DataSourceLocator.getDataSource();
+        dataSource = DataSourceLocator.getDataSource(RACE_DATA_SOURCE);
         raceDao = SqlRaceDaoFactory.getDao();
         inscriptionDao = SqlInscriptionDaoFactory.getDao();
     }

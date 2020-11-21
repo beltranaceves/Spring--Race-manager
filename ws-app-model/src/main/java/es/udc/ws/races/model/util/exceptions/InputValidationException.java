@@ -1,4 +1,4 @@
-package es.udc.ws.util.exceptions;
+package es.udc.ws.races.model.util.exceptions;
 
 @SuppressWarnings("serial")
 public class InputValidationException extends Exception {

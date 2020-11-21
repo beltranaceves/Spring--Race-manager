@@ -1,4 +1,4 @@
-package es.udc.ws.util.configuration;
+package es.udc.ws.races.model.util.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;

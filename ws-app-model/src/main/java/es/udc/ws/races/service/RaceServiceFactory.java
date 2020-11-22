@@ -13,8 +13,7 @@ public class RaceServiceFactory {
     @SuppressWarnings("rawtypes")
     private static RaceService getInstance() {
         try {
-            String serviceClassName = ConfigurationParametersManager
-                    .getParameter(CLASS_NAME_PARAMETER);
+            String serviceClassName = ConfigurationParametersManager.getParameter(CLASS_NAME_PARAMETER);
             Class serviceClass = Class.forName(serviceClassName);
             return (RaceService) serviceClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {

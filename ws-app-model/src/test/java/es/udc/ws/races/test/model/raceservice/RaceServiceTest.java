@@ -171,18 +171,25 @@ public class RaceServiceTest {
             // Find Race
             Race foundRace = raceService.findRace(addedRace.getRaceId());
 
-            assertEqu als(addedRace, foundRace);
-            assertEquals(foundRace.getTitle(),movie.getTitle());
-            assertEquals(foundMovie.getRuntime(),movie.getRuntime());
-            assertEquals(foundMovie.getDescription(),movie.getDescription());
-            assertEquals(foundMovie.getPrice(),movie.getPrice());
-            assertTrue((foundMovie.getCreationDate().compareTo(beforeCreationDate) >= 0)
-                    && (foundMovie.getCreationDate().compareTo(afterCreationDate) <= 0));
+            assertEquals(addedRace, foundRace);
+            assertEquals(foundRace.getRaceId(),race.getRaceId());
+            assertEquals(foundRace.getCity(),race.getCity());
+            assertEquals(foundRace.getRaceDescription(),race.getRaceDescription());
+            assertEquals(foundRace.getCreationDate(),race.getCreationDate());
+            assertEquals(foundRace.getMaxParticipants(),race.getMaxParticipants());
+            assertEquals(foundRace.getScheduleDate(),race.getScheduleDate());
+            assertEquals(foundRace.getInscriptionPrice(),race.getInscriptionPrice());
+            assertEquals(foundRace.getNumberOfInscribed(),race.getNumberOfInscribed());
+
+        } catch (es.udc.ws.races.model.util.exceptions.InputValidationException e) {
+            e.printStackTrace();
+        } catch (es.udc.ws.races.model.util.exceptions.InstanceNotFoundException e) {
+            e.printStackTrace();
 
         } finally {
             // Clear Database
-            if (addedMovie!=null) {
-                removeMovie(addedMovie.getMovieId());
+            if (addedRace!=null) {
+                removeRace(addedRace.getRaceId());
             }
         }
     }

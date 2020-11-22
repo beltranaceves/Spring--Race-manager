@@ -5,6 +5,7 @@ import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.util.exceptions.InputValidationException;
 import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RaceService {
@@ -12,6 +13,10 @@ public interface RaceService {
     public Race addRace(Race race) throws InputValidationException;
 
     public Race findRace(Long raceId) throws InstanceNotFoundException;
+
+    public List<Race> findRacesByDate(LocalDateTime scheduleDate) throws InputValidationException;
+
+    public List<Race> findRacesByDateAndCity(LocalDateTime scheduleDate, String city) throws InputValidationException;
 
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException;
 

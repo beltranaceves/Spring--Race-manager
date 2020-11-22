@@ -6,9 +6,7 @@ import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.inscription.Inscription;
-import es.udc.ws.races.model.util.exceptions.InputValidationException;
-import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
-import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.model.util.exceptions.*;
 import es.udc.ws.races.model.util.validation.PropertyValidator;
 import es.udc.ws.util.sql.DataSourceLocator;
 
@@ -40,6 +38,15 @@ public class RaceServiceImpl implements RaceService{
         PropertyValidator.validateMandatoryString("raceDescription", race.getRaceDescription());
         PropertyValidator.validateDouble("inscriptionPrice", race.getInscriptionPrice(), 0, MAX_INSCRIPTION_PRICE);
         PropertyValidator.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
+
+    }
+
+    private void validateInscription(Inscription inscription) throws InputValidationException {
+
+        PropertyValidator.validateCreditCard(inscription.getCreditCardNumber());
+        PropertyValidator.validateLong("raceId", inscription.getRaceId(), 0, MAX_RACE_NUMBER);
+        PropertyValidator.validateUserEmail(inscription.getUserEmail());
+        PropertyValidator.validateInt("dorsalNumber",inscription.getDorsalNumber(), 0 , MAX_DORSAL_NUMBER);
 
     }
 
@@ -200,6 +207,69 @@ public class RaceServiceImpl implements RaceService{
 
     }
 
+    private void updateInscription(Inscription inscription) throws InputValidationException, InstanceNotFoundException {
+
+        validateInscription(inscription);
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            try {
+
+                /* Prepare connection. */
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                connection.setAutoCommit(false);
+
+                /* Do work. */
+                inscriptionDao.update(connection, inscription);
+
+                /* Commit. */
+                connection.commit();
+
+            } catch (InstanceNotFoundException e) {
+                connection.commit();
+                throw e;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
+            } catch (RuntimeException | Error e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
+            dorsalAlreadyCollectedException, InputValidationException {
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            Inscription inscription = inscriptionDao.find(connection, inscriptionId);
+            LocalDateTime now = LocalDateTime.now();
+            Race race = findRace(inscription.getRaceId());
+
+            if (inscription.getCollected()) {
+                throw new dorsalAlreadyCollectedException();
+            } else {
+                if (race.getScheduleDate().isAfter(now)) {
+                    inscription.setCollected(true);
+                    updateInscription(inscription);
+                    return inscription.getDorsalNumber();
+                } else {
+                    throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
+                }
+            }
+
+        } catch (SQLException | InputValidationException | InscriptionExpirationException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @Override
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException {
 
@@ -211,6 +281,7 @@ public class RaceServiceImpl implements RaceService{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -221,4 +292,5 @@ public class RaceServiceImpl implements RaceService{
             throw new RuntimeException(e);
         }
     }
+
 }

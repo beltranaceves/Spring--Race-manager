@@ -9,8 +9,8 @@ import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
-import es.udc.ws.util.exceptions.InputValidationException;
-import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.races.model.util.exceptions.InputValidationException;
+import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
 
@@ -233,5 +233,38 @@ public class RaceServiceTest {
         }
     }
 
-}
+    //Parte alumno 3 (caso 6)
+    @Test
+    public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException {
 
+        Race race = getValidRace("A Coruña", (long) 1);
+        Race addedRace = null;
+        Race foundRace = null;
+        Long addedInscription = null;
+
+        try {
+
+            // Add Race
+            addedRace = raceService.addRace(race);
+
+            // Find Race
+            foundRace = raceService.findRace(addedRace.getRaceId());
+
+            // Add Inscription
+            addedInscription = raceService.inscribeRace(foundRace.getRaceId(), "user@domain.com", VALID_CREDIT_CARD_NUMBER);
+
+        } catch (InputValidationException e) {
+            e.printStackTrace();
+        } catch (InstanceNotFoundException e) {
+            e.printStackTrace();
+        } catch (InscriptionDateOverException e) {
+            e.printStackTrace();
+        } finally {
+            // Clear Database
+            if (addedRace!=null) {
+                removeRace(addedRace.getRaceId());
+            }
+        }
+    }
+
+}

@@ -24,7 +24,7 @@ public final class PropertyValidator {
     }
 
     public static void validateLong(String propertyName,
-            long value, int lowerValidLimit, int upperValidLimit)
+                                    long value, int lowerValidLimit, int upperValidLimit)
             throws InputValidationException {
 
         if ( (value < lowerValidLimit) || (value > upperValidLimit) ) {

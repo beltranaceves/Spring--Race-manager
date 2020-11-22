@@ -15,8 +15,7 @@ import es.udc.ws.util.sql.SimpleDataSource;
 
 
 import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,7 @@ public class RaceServiceTest {
 
     private Race getValidRace(String city, Long offset) {
         return new Race(city, "Carrera de ejemplo", 30.0, 150,
-                0, LocalDateTime.now().plusDays(3));
+                0, LocalDateTime.now().plusDays(3).withNano(0));
     }
 
     private Race createMovie(Race race) {
@@ -167,15 +166,14 @@ public class RaceServiceTest {
             // Find Race
             Race foundRace = raceService.findRace(addedRace.getRaceId());
 
-            assertEquals(addedRace, foundRace);
-            assertEquals(foundRace.getRaceId(),race.getRaceId());
-            assertEquals(foundRace.getCity(),race.getCity());
-            assertEquals(foundRace.getRaceDescription(),race.getRaceDescription());
-            assertEquals(foundRace.getCreationDate(),race.getCreationDate());
-            assertEquals(foundRace.getMaxParticipants(),race.getMaxParticipants());
-            assertEquals(foundRace.getScheduleDate(),race.getScheduleDate());
-            assertEquals(foundRace.getInscriptionPrice(),race.getInscriptionPrice());
-            assertEquals(foundRace.getNumberOfInscribed(),race.getNumberOfInscribed());
+            assertEquals(foundRace.getRaceId(), addedRace.getRaceId());
+            assertEquals(foundRace.getCity(), addedRace.getCity());
+            assertEquals(foundRace.getRaceDescription(), addedRace.getRaceDescription());
+            assertEquals(foundRace.getCreationDate(), addedRace.getCreationDate());
+            assertEquals(foundRace.getMaxParticipants(), addedRace.getMaxParticipants());
+            assertEquals(foundRace.getScheduleDate(), addedRace.getScheduleDate());
+            assertEquals(foundRace.getInscriptionPrice(), addedRace.getInscriptionPrice());
+            assertEquals(foundRace.getNumberOfInscribed(), addedRace.getNumberOfInscribed());
 
         } catch (es.udc.ws.races.model.util.exceptions.InputValidationException e) {
             e.printStackTrace();
@@ -185,7 +183,7 @@ public class RaceServiceTest {
         } finally {
             // Clear Database
             if (addedRace!=null) {
-                //removeRace(addedRace.getRaceId());
+                removeRace(addedRace.getRaceId());
             }
         }
     }

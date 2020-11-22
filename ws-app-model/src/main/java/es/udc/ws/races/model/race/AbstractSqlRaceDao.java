@@ -42,11 +42,11 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
             int maxParticipants = resultSet.getInt(i++);
             Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
             LocalDateTime creationDate = creationDateAsTimestamp != null
-                    ? creationDateAsTimestamp.toLocalDateTime()
+                    ? creationDateAsTimestamp.toLocalDateTime().withNano(0)
                     : null;
             Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
             LocalDateTime scheduleDate = scheduleDateAsTimestamp != null
-                    ? scheduleDateAsTimestamp.toLocalDateTime()
+                    ? scheduleDateAsTimestamp.toLocalDateTime().withNano(0)
                     : null;
             int numberOfInscribed = resultSet.getInt(i++);
 

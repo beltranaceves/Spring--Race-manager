@@ -21,9 +21,9 @@ public class Jdbc3CcSqlRaceDao extends AbstractSqlRaceDao {
             preparedStatement.setString(i++, race.getRaceDescription());
             preparedStatement.setDouble(i++, race.getInscriptionPrice());
             preparedStatement.setInt(i++, race.getMaxParticipants());
-            Timestamp date = race.getCreationDate() != null ? Timestamp.valueOf(race.getCreationDate()) : null;
+            Timestamp date =  Timestamp.valueOf(race.getCreationDate().withNano(0));
             preparedStatement.setTimestamp(i++, date);
-            Timestamp scheduleDate = race.getScheduleDate() != null ? Timestamp.valueOf(race.getScheduleDate()) : null;
+            Timestamp scheduleDate = Timestamp.valueOf(race.getScheduleDate().withNano(0));
             preparedStatement.setTimestamp(i++, scheduleDate);
             preparedStatement.setInt(i++, race.getNumberOfInscribed());
 

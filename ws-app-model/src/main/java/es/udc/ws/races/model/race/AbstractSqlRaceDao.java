@@ -65,8 +65,8 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
 
         /* Create "queryString". */
         String queryString = "UPDATE Race"
-                + " SET raceId = ?, userEmail = ?, raceId = ?, "
-                + " creditCardNumber = ?, dorsalNumber = ?, raceDate = ?, scheduleDate = ?, collected = ?, WHERE raceId = ?";
+                + " SET city = ?, raceDescription = ?, "
+                + " inscriptionPrice = ?, maxParticipants = ?, creationDate = ?, scheduleDate = ?, numberOfInscribed = ? WHERE raceId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 

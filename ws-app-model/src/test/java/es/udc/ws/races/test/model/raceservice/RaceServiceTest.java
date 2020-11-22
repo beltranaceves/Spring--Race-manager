@@ -56,8 +56,8 @@ public class RaceServiceTest {
         DataSourceLocator.addDataSource(RACE_DATA_SOURCE, dataSource);
 
         raceService = RaceServiceFactory.getService();
-
         raceDao = SqlRaceDaoFactory.getDao();
+
         inscriptionDao = SqlInscriptionDaoFactory.getDao();
     }
 
@@ -69,12 +69,13 @@ public class RaceServiceTest {
     private Race pastRace() {
         LocalDateTime creationDate = LocalDateTime.now().withNano(0);
         LocalDateTime celebrateDate = LocalDateTime.of(2020, 11, 22, 16, 00);
-        return new Race("Coruña", "Hola", 20.50, 100, 50, creationDate, celebrateDate);
+        return new Race("Coruña", "Ejemplo de carrera pasada", 20.50, 100, 50, creationDate, celebrateDate);
     }
 
     private Race futureRace() {
-        LocalDateTime fechaCelebracion = LocalDateTime.of(2050, 11, 22, 16, 00);
-        return new Race("Coruña", "Hola", 20.50, 100, 50, fechaCelebracion);
+        LocalDateTime creationDate = LocalDateTime.now().withNano(0);
+        LocalDateTime celebrationDate = LocalDateTime.of(2050, 11, 22, 16, 00);
+        return new Race("Coruña", "Ejemplo de carrera futura", 20.50, 100, 50, creationDate, celebrationDate);
     }
 
     private Race createRace(Race race) {
@@ -132,7 +133,7 @@ public class RaceServiceTest {
         }
     }
 
-    private void updateSale(Inscription inscription) {
+    private void updateInscription(Inscription inscription) {
 
         DataSource dataSource = DataSourceLocator.getDataSource(RACE_DATA_SOURCE);
 
@@ -150,14 +151,15 @@ public class RaceServiceTest {
                 /* Commit. */
                 connection.commit();
 
+            } catch (InstanceNotFoundException e) {
+                connection.commit();
+                throw new RuntimeException(e);
             } catch (SQLException e) {
                 connection.rollback();
                 throw new RuntimeException(e);
             } catch (RuntimeException | Error e) {
                 connection.rollback();
                 throw e;
-            } catch (es.udc.ws.races.model.util.exceptions.InstanceNotFoundException e) {
-                e.printStackTrace();
             }
 
         } catch (SQLException e) {
@@ -176,7 +178,7 @@ public class RaceServiceTest {
         try {
 
             // Add Race
-            addedRace = raceService.addRace(race);
+            addedRace = createRace(race);
 
             // Find Race
             Race foundRace = raceService.findRace(addedRace.getRaceId());
@@ -190,9 +192,7 @@ public class RaceServiceTest {
             assertEquals(foundRace.getInscriptionPrice(), addedRace.getInscriptionPrice());
             assertEquals(foundRace.getNumberOfInscribed(), addedRace.getNumberOfInscribed());
 
-        } catch (es.udc.ws.races.model.util.exceptions.InputValidationException e) {
-            e.printStackTrace();
-        } catch (es.udc.ws.races.model.util.exceptions.InstanceNotFoundException e) {
+        } catch (InstanceNotFoundException e) {
             e.printStackTrace();
 
         } finally {
@@ -204,16 +204,33 @@ public class RaceServiceTest {
     }
 
     @Test
-    public void testInscribeRace() {
+    public void testInscribeRace() throws InputValidationException, InstanceNotFoundException, InscriptionDateOverException {
 
         Race race = createRace(futureRace());
+        Long inscription1 = null;
         try {
-            assertThrows(InscriptionDateOverException.class, () -> {
-                Long inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
-                removeInscription(inscription1);
-            });
+
+            LocalDateTime beforeInscribeDate = LocalDateTime.now().withNano(0);
+            inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+
+            LocalDateTime afterInscribeDate = LocalDateTime.now().withNano(0);
+
+            // Find inscription
+            Inscription foundInscription = raceService.findInscription(inscription1);
+
+            // Check inscription
+            assertEquals(inscription1, foundInscription);
+            assertEquals(VALID_CREDIT_CARD_NUMBER, foundInscription.getCreditCardNumber());
+            assertEquals(VALID_USER_EMAIL, foundInscription.getUserEmail());
+            assertEquals(race.getRaceId(), foundInscription.getRaceId());
+            assertTrue((foundInscription.getInscriptionDate().compareTo(beforeInscribeDate) >= 0)
+                    && (foundInscription.getInscriptionDate().compareTo(afterInscribeDate) <= 0));
+            assertFalse(foundInscription.getCollected());
+            assertEquals(race.getNumberOfInscribed(), foundInscription.getDorsalNumber());
         } finally {
-            // Clear database
+            if (inscription1 != null) {
+                removeInscription(inscription1);
+            }
             removeRace(race.getRaceId());
         }
     }
@@ -233,7 +250,18 @@ public class RaceServiceTest {
         }
     }
 
+    @Test
+    public void testInscribeNonExistentRace() {
+
+        assertThrows(InstanceNotFoundException.class, () -> {
+            Long inscription1 = raceService.inscribeRace(NON_EXISTENT_RACE_ID, VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+            removeInscription(inscription1);
+        });
+
+    }
+
     //Parte alumno 3 (caso 6)
+    /*
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException {
 
@@ -245,7 +273,7 @@ public class RaceServiceTest {
         try {
 
             // Add Race
-            addedRace = raceService.addRace(race);
+            addedRace = createRace(race);
 
             // Find Race
             foundRace = raceService.findRace(addedRace.getRaceId());
@@ -266,5 +294,6 @@ public class RaceServiceTest {
             }
         }
     }
+     */
 
 }

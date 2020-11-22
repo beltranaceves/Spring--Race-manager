@@ -27,7 +27,8 @@ public class Jdbc3CcSqlInscriptionDao extends AbstractSqlInscriptionDao {
             preparedStatement.setString(i++, inscription.getCreditCardNumber());
             preparedStatement.setInt(i++, inscription.getDorsalNumber());
             preparedStatement.setTimestamp(i++, Timestamp.valueOf(inscription.getInscriptionDate()));
-            preparedStatement.setBoolean(i++, inscription.getCollected());
+            preparedStatement.setBoolean(i++, false);
+
             /* Execute query. */
             preparedStatement.executeUpdate();
 

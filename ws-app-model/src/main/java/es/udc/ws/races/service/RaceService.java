@@ -22,6 +22,8 @@ public interface RaceService {
 
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException;
 
+    public Inscription findInscription(Long inscriptionId) throws InstanceNotFoundException;
+
     public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber) throws InputValidationException,
             InstanceNotFoundException, InscriptionDateOverException;
 

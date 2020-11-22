@@ -175,8 +175,9 @@ public class RaceServiceImpl implements RaceService{
                     throw new InscriptionDateOverException(raceId, dateOver);
                 } else {
                     int dorsalNumber = race.getNumberOfInscribed() + 1;
+                    Boolean collected = false;
                     Inscription inscription = inscriptionDao.create(connection, new Inscription(userEmail, raceId, creditCardNumber, dorsalNumber,
-                            inscriptionDate, false));
+                            inscriptionDate, collected));
 
                     /* Commit to create inscription. */
                     connection.commit();
@@ -191,9 +192,6 @@ public class RaceServiceImpl implements RaceService{
             } catch (InstanceNotFoundException e) {
                 connection.commit();
                 throw e;
-            } catch (InscriptionDateOverException e) {
-                connection.rollback();
-                throw e;
             } catch (SQLException e) {
                 connection.rollback();
                 throw new RuntimeException(e);
@@ -205,6 +203,16 @@ public class RaceServiceImpl implements RaceService{
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public Inscription findInscription(Long inscriptionId) throws InstanceNotFoundException {
+
+        try (Connection connection = dataSource.getConnection()) {
+            return inscriptionDao.find(connection, inscriptionId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void updateInscription(Inscription inscription) throws InputValidationException, InstanceNotFoundException {

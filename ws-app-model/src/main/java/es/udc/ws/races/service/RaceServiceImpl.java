@@ -43,7 +43,36 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public Race addRace(Race race) throws InputValidationException {
-        return null;
+        validateRace(race);
+        race.setCreationDate(LocalDateTime.now());
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            try {
+
+                /* Prepare connection. */
+                connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                connection.setAutoCommit(false);
+
+                /* Do work. */
+                Race createdRace = raceDao.create(connection, race);
+
+                /* Commit. */
+                connection.commit();
+
+                return createdRace;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException(e);
+            } catch (RuntimeException | Error e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -51,6 +80,26 @@ public class RaceServiceImpl implements RaceService{
 
         try (Connection connection = dataSource.getConnection()) {
             return raceDao.find(connection, raceId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Race> findRacesByDate(LocalDateTime scheduleDate) {
+
+        try (Connection connection = dataSource.getConnection()) {
+            return raceDao.findByDate(connection, scheduleDate);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Race> findRacesByDateAndCity(LocalDateTime scheduleDate, String city) {
+
+        try (Connection connection = dataSource.getConnection()) {
+            return raceDao.findByDateAndCity(connection, scheduleDate, city);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

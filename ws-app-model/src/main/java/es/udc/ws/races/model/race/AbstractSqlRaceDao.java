@@ -126,4 +126,113 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
         }
 
     }
+
+    @Override
+    public List<Race> findByDate(Connection connection, LocalDateTime creationDate) {
+
+        /* Create "queryString". */
+        String queryString = "SELECT raceId, city, raceDescription,  "
+                + " inscriptionPrice, maxParticipants, creationDate, numberOfInscribed FROM Race";
+        Timestamp date = Timestamp.valueOf(creationDate);
+        queryString += " WHERE creationDate <= ? ";
+
+        queryString += " ORDER BY creationDate";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            int i = 1;
+            preparedStatement.setTimestamp(i++, date);
+
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            /* Read movies. */
+            List<Race> races = new ArrayList<Race>();
+
+            while (resultSet.next()) {
+
+                i = 1;
+                Long raceId = resultSet.getLong(i++);
+                String city = resultSet.getString(i++);
+                String raceDescription = resultSet.getString(i++);
+                double inscriptionPrice = resultSet.getDouble(i++);
+                int maxParticipants = resultSet.getInt(i++);
+                Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
+                LocalDateTime creationDateTime = creationDateAsTimestamp != null
+                        ? creationDateAsTimestamp.toLocalDateTime()
+                        : null;
+                Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
+                LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
+                        ? creationDateAsTimestamp.toLocalDateTime()
+                        : null;
+                int numberOfInscribed = resultSet.getInt(i++);
+
+                /* Return sale. */
+                races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
+
+            }
+
+            /* Return movies. */
+            return races;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public List<Race> findByDateAndCity(Connection connection, LocalDateTime creationDate, String inputCity) {
+
+        /* Create "queryString". */
+        String queryString = "SELECT raceId, city, raceDescription,  "
+                + " inscriptionPrice, maxParticipants, creationDate, numberOfInscribed FROM Race";
+        Timestamp date = Timestamp.valueOf(creationDate);
+        queryString += " WHERE creationDate <= ? ";
+        queryString += " AND city = ? ";
+        queryString += " ORDER BY city, creationDate";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            int i = 1;
+            preparedStatement.setTimestamp(i++, date);
+            preparedStatement.setString(i++, inputCity);
+
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            /* Read movies. */
+            List<Race> races = new ArrayList<Race>();
+
+            while (resultSet.next()) {
+
+                i = 1;
+                Long raceId = resultSet.getLong(i++);
+                String city = resultSet.getString(i++);
+                String raceDescription = resultSet.getString(i++);
+                double inscriptionPrice = resultSet.getDouble(i++);
+                int maxParticipants = resultSet.getInt(i++);
+                Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
+                LocalDateTime creationDateTime = creationDateAsTimestamp != null
+                        ? creationDateAsTimestamp.toLocalDateTime()
+                        : null;
+                Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
+                LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
+                        ? creationDateAsTimestamp.toLocalDateTime()
+                        : null;
+                int numberOfInscribed = resultSet.getInt(i++);
+
+                /* Return sale. */
+                races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
+
+            }
+
+            /* Return movies. */
+            return races;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

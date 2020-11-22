@@ -128,16 +128,16 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
 
         /* Create "queryString". */
         String queryString = "SELECT raceId, city, raceDescription,  "
-                + " inscriptionPrice, maxParticipants, creationDate, numberOfInscribed FROM Race";
-        Timestamp date = Timestamp.valueOf(creationDate);
-        queryString += " WHERE creationDate <= ? ";
+                + " inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed FROM Race";
+        queryString += " WHERE scheduleDate > (?) ";
 
         queryString += " ORDER BY creationDate";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
             int i = 1;
-            preparedStatement.setTimestamp(i++, date);
+            Timestamp timestamp = Timestamp.valueOf(creationDate);
+            preparedStatement.setTimestamp(i++, timestamp);
 
             /* Execute query. */
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -159,7 +159,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
                         : null;
                 Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
                 LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
-                        ? creationDateAsTimestamp.toLocalDateTime()
+                        ? scheduleDateAsTimestamp.toLocalDateTime()
                         : null;
                 int numberOfInscribed = resultSet.getInt(i++);
 
@@ -182,16 +182,16 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
 
         /* Create "queryString". */
         String queryString = "SELECT raceId, city, raceDescription,  "
-                + " inscriptionPrice, maxParticipants, creationDate, numberOfInscribed FROM Race";
-        Timestamp date = Timestamp.valueOf(creationDate);
-        queryString += " WHERE creationDate <= ? ";
+                + " inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed FROM Race";
+        queryString += " WHERE scheduleDate > ? ";
         queryString += " AND city = ? ";
         queryString += " ORDER BY city, creationDate";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
             int i = 1;
-            preparedStatement.setTimestamp(i++, date);
+            Timestamp timestamp = Timestamp.valueOf(creationDate);
+            preparedStatement.setTimestamp(i++, timestamp);
             preparedStatement.setString(i++, inputCity);
 
             /* Execute query. */
@@ -214,7 +214,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
                         : null;
                 Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
                 LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
-                        ? creationDateAsTimestamp.toLocalDateTime()
+                        ? scheduleDateAsTimestamp.toLocalDateTime()
                         : null;
                 int numberOfInscribed = resultSet.getInt(i++);
 

@@ -26,6 +26,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RaceServiceTest {
 
@@ -64,7 +65,7 @@ public class RaceServiceTest {
 
     private Race getValidRace(String city, Long offset) {
         return new Race(city, "Carrera de ejemplo", 30.0, 150,
-                0, LocalDateTime.now().plusDays(3).withNano(0));
+                0, LocalDateTime.now().plusDays(offset).withNano(0));
     }
 
     private Race pastRace() {
@@ -171,7 +172,7 @@ public class RaceServiceTest {
 
     //Parte alumno 3 (apartado 2)
     @Test
-    public void testAddMovieAndFindMovie() throws InputValidationException, InstanceNotFoundException {
+    public void testAddRaceAndFindRace() throws InputValidationException, InstanceNotFoundException {
 
         Race race = getValidRace("A Coruña", (long) 1);
         Race addedRace = null;
@@ -266,7 +267,7 @@ public class RaceServiceTest {
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException {
 
-        Race race = getValidRace("A Coruña", (long) 1);
+        Race race = getValidRace("A Coruña", (long) 2);
         Race addedRace = null;
         Race foundRace = null;
         Long addedInscription = null;
@@ -309,7 +310,7 @@ public class RaceServiceTest {
     public void testCollectDorsalDorsalAlreadyCollected() throws InputValidationException, InstanceNotFoundException {
 
         assertThrows(dorsalAlreadyCollectedException.class, () -> {
-            Race race = getValidRace("A Coruña", (long) 1);
+            Race race = getValidRace("A Coruña", (long) 2);
             Race addedRace = null;
             Race foundRace = null;
             Long addedInscription = null;
@@ -328,6 +329,8 @@ public class RaceServiceTest {
                 foundRace = raceService.findRace(addedRace.getRaceId());
                 int dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
                 dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
+                dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
+                dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
 
             } catch (InputValidationException e) {
                 e.printStackTrace();
@@ -343,5 +346,73 @@ public class RaceServiceTest {
             }
         });
 
+    }
+
+    //Alumno 1 (caso 1)
+    @Test
+    public void testAddRace() {
+        Race race = getValidRace("Tijuana", (long) 2);
+        Race addedRace = null;
+        try {
+            addedRace = raceService.addRace(race);
+
+            assertEquals(race.getNumberOfInscribed(), addedRace.getNumberOfInscribed());
+            assertEquals(race.getInscriptionPrice(), addedRace.getInscriptionPrice());
+            assertEquals(race.getScheduleDate(), addedRace.getScheduleDate());
+            assertEquals(race.getMaxParticipants(), addedRace.getMaxParticipants());
+            assertEquals(race.getRaceDescription(), addedRace.getRaceDescription());
+            assertEquals(race.getCity(), addedRace.getCity());
+        } catch (InputValidationException e) {
+            e.printStackTrace();
+        } finally {
+            // Clear Database
+            if (addedRace!=null) {
+                removeRace(addedRace.getRaceId());
+            }
+        }
+
+    }
+
+    //Alumno 1 (caso 3)
+    @Test
+    public void testFindRaceByDate() {
+        Race race1 = getValidRace("Vigo", (long) 3);
+        Race race2 = getValidRace("Cangas", (long) -3);
+        race2.setScheduleDate(LocalDateTime.now().minusDays(2));
+        try
+        {
+            race1 = raceService.addRace(race1);
+            race2 = raceService.addRace(race2);
+            List<Race> races = raceService.findRacesByDate(LocalDateTime.now());
+            assertEquals(races.get(0).getRaceId(), race1.getRaceId());
+        } catch (InputValidationException e) {
+            e.printStackTrace();
+        } finally {
+            // Clear Database
+            if (race1!=null) {
+                removeRace(race1.getRaceId());
+            }
+            // Clear Database
+            if (race2!=null) {
+                removeRace(race2.getRaceId());
+            }
+        }
+    }
+
+    //Alumno 1 (caso 3)
+    @Test
+    public void testFindRaceByDateAndCity() {
+        Race race1 = getValidRace("Vigo", (long) 3);
+        Race race2 = getValidRace("Cangas", (long) -3);
+        race2.setScheduleDate(LocalDateTime.now().minusDays(2));
+        try
+        {
+            race1 = raceService.addRace(race1);
+            race2 = raceService.addRace(race2);
+            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now(), "Vigo");
+            assertEquals(races.get(0).getRaceId(), race1.getRaceId());
+        } catch (InputValidationException e) {
+            e.printStackTrace();
+        }
     }
 }

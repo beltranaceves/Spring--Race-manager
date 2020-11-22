@@ -72,7 +72,6 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
 
             /* Fill "preparedStatement". */
             int i = 1;
-            preparedStatement.setLong(i++, race.getRaceId());
             preparedStatement.setString(i++, race.getCity());
             preparedStatement.setString(i++, race.getRaceDescription());
             preparedStatement.setDouble(i++, race.getInscriptionPrice());
@@ -82,6 +81,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
             Timestamp scheduleDate = race.getScheduleDate() != null ? Timestamp.valueOf(race.getScheduleDate()) : null;
             preparedStatement.setTimestamp(i++, scheduleDate);
             preparedStatement.setInt(i++, race.getNumberOfInscribed());
+            preparedStatement.setLong(i++, race.getRaceId());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();

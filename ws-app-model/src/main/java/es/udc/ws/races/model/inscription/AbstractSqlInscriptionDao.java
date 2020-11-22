@@ -67,7 +67,7 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
         /* Create "queryString". */
         String queryString = "UPDATE Inscription"
                 + " SET inscriptionId = ?, userEmail = ?, raceId = ?, "
-                + " creditCardNumber = ?, dorsalNumber = ?, inscriptionDate = ?, collected = ?, WHERE inscriptionId = ?";
+                + " creditCardNumber = ?, dorsalNumber = ?, inscriptionDate = ?, collected = ? WHERE inscriptionId = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
@@ -81,6 +81,7 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
 			Timestamp date = inscription.getInscriptionDate() != null ? Timestamp.valueOf(inscription.getInscriptionDate()) : null;
             preparedStatement.setTimestamp(i++, date);
             preparedStatement.setBoolean(i++, inscription.getCollected());
+            preparedStatement.setLong(i++, inscription.getInscriptionId());
 
             /* Execute query. */
             int updatedRows = preparedStatement.executeUpdate();

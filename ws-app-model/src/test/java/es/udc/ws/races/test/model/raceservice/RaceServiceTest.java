@@ -7,6 +7,7 @@ import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.model.util.exceptions.dorsalAlreadyCollectedException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
 import es.udc.ws.races.model.util.exceptions.InputValidationException;
@@ -218,8 +219,9 @@ public class RaceServiceTest {
             // Find inscription
             Inscription foundInscription = raceService.findInscription(inscription1);
 
+            race = raceService.findRace(race.getRaceId());
             // Check inscription
-            assertEquals(inscription1, foundInscription);
+            //assertEquals(inscription1, foundInscription);
             assertEquals(VALID_CREDIT_CARD_NUMBER, foundInscription.getCreditCardNumber());
             assertEquals(VALID_USER_EMAIL, foundInscription.getUserEmail());
             assertEquals(race.getRaceId(), foundInscription.getRaceId());
@@ -261,7 +263,6 @@ public class RaceServiceTest {
     }
 
     //Parte alumno 3 (caso 6)
-    /*
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException {
 
@@ -281,11 +282,18 @@ public class RaceServiceTest {
             // Add Inscription
             addedInscription = raceService.inscribeRace(foundRace.getRaceId(), "user@domain.com", VALID_CREDIT_CARD_NUMBER);
 
+            foundRace = raceService.findRace(addedRace.getRaceId());
+            int dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
+
+            assertEquals(foundRace.getNumberOfInscribed(), dorsalNumber);
+
         } catch (InputValidationException e) {
             e.printStackTrace();
         } catch (InstanceNotFoundException e) {
             e.printStackTrace();
         } catch (InscriptionDateOverException e) {
+            e.printStackTrace();
+        } catch (dorsalAlreadyCollectedException e) {
             e.printStackTrace();
         } finally {
             // Clear Database
@@ -294,6 +302,46 @@ public class RaceServiceTest {
             }
         }
     }
-     */
 
+
+    //Parte alumno 3 (caso 6)
+    @Test
+    public void testCollectDorsalDorsalAlreadyCollected() throws InputValidationException, InstanceNotFoundException {
+
+        assertThrows(dorsalAlreadyCollectedException.class, () -> {
+            Race race = getValidRace("A Coruña", (long) 1);
+            Race addedRace = null;
+            Race foundRace = null;
+            Long addedInscription = null;
+
+            try {
+
+                // Add Race
+                addedRace = createRace(race);
+
+                // Find Race
+                foundRace = raceService.findRace(addedRace.getRaceId());
+
+                // Add Inscription
+                addedInscription = raceService.inscribeRace(foundRace.getRaceId(), "user@domain.com", VALID_CREDIT_CARD_NUMBER);
+
+                foundRace = raceService.findRace(addedRace.getRaceId());
+                int dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
+                dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
+
+            } catch (InputValidationException e) {
+                e.printStackTrace();
+            } catch (InstanceNotFoundException e) {
+                e.printStackTrace();
+            } catch (InscriptionDateOverException e) {
+                e.printStackTrace();
+            } finally {
+                // Clear Database
+                if (addedRace!=null) {
+                    removeRace(addedRace.getRaceId());
+                }
+            }
+        });
+
+    }
 }

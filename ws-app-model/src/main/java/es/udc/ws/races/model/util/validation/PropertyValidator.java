@@ -1,12 +1,27 @@
-package es.udc.ws.util.validation;
+package es.udc.ws.races.model.util.validation;
 
 import java.math.BigInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.races.model.util.exceptions.InputValidationException;
 
 public final class PropertyValidator {
 
     private PropertyValidator() {}
+
+    public static void validateInt(String propertyName,
+                                   int intValue, int lowerValidLimit, int upperValidLimit)
+            throws es.udc.ws.races.model.util.exceptions.InputValidationException {
+
+        if ((intValue < lowerValidLimit) ||
+                (intValue > upperValidLimit)) {
+            throw new es.udc.ws.races.model.util.exceptions.InputValidationException("Invalid " + propertyName +
+                    " value (it must be greater than " + lowerValidLimit +
+                    " and lower than " + upperValidLimit + "): " +
+                    intValue);
+        }
+    }
 
     public static void validateLong(String propertyName,
             long value, int lowerValidLimit, int upperValidLimit)
@@ -74,6 +89,20 @@ public final class PropertyValidator {
                     propertyValue);
         }
 
+    }
+
+    public static void validateUserEmail(String userEmailValue) throws InputValidationException {
+
+        /* Regular expression of email format permitted by RFC 5322. */
+        String regex = "^[a - zA - Z0 - 9_ !#$ % &’*+ /=?`{|} ~ ^.-]+ @[a - zA - Z0 - 9. -]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(userEmailValue);
+
+        if ( (userEmailValue == null) || (!matcher.matches()) ) {
+            throw new InputValidationException("Invalid user email value: "
+                    + userEmailValue + ". It cannot be null and must "
+                    + "match a valid format.");
+        }
     }
 
 }

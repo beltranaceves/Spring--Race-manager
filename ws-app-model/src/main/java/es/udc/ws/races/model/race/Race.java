@@ -34,4 +34,54 @@ public class Race {
         this.creationDate = (creationDate != null) ? creationDate.withNano(0) : null;
         this.scheduleDate = (scheduleDate != null) ? scheduleDate.withNano(0) : null;
     }
+
+    public Long getRaceId() {
+        return raceId;
+    }
+    public void setRaceId(Long raceId) {
+        this.raceId = raceId;
+    }
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public String getRaceDescription() {
+        return raceDescription;
+    }
+    public void setRaceDescription(String raceDescription) {
+        this.raceDescription = raceDescription;
+    }
+    public double getInscriptionPrice() {
+        return inscriptionPrice;
+    }
+    public void setInscriptionPrice(double inscriptionPrice) {
+        this.inscriptionPrice = inscriptionPrice;
+    }
+    public int getMaxParticipants() {
+        return maxParticipants;
+    }
+    public void setMaxParticipants(int maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+    public LocalDateTime getScheduleDate() {
+        return scheduleDate;
+    }
+    public void setScheduleDate(LocalDateTime scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+    public int getNumberOfInscribed() {
+        return numberOfInscribed;
+    }
+    public void setNumberOfInscribed(int numberOfInscribed) {
+        this.numberOfInscribed = numberOfInscribed;
+    }
+
 }

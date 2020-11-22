@@ -15,6 +15,8 @@ import es.udc.ws.util.sql.SimpleDataSource;
 
 
 import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -148,6 +150,41 @@ public class RaceServiceTest {
             throw new RuntimeException(e);
         }
 
+    }
+
+    //Parte alumno 3 (apartado 2)
+    @Test
+    public void testAddMovieAndFindMovie() throws InputValidationException, InstanceNotFoundException {
+
+        Race race = getValidRace("A Coruña", (long) 1);
+        Race addedRace = null;
+
+        try {
+
+            // Create Race
+            LocalDateTime beforeCreationDate = LocalDateTime.now().withNano(0);
+
+            addedRace = raceService.addRace(race);
+
+            LocalDateTime afterCreationDate = LocalDateTime.now().withNano(0);
+
+            // Find Race
+            Race foundRace = raceService.findRace(addedRace.getRaceId());
+
+            assertEqu als(addedRace, foundRace);
+            assertEquals(foundRace.getTitle(),movie.getTitle());
+            assertEquals(foundMovie.getRuntime(),movie.getRuntime());
+            assertEquals(foundMovie.getDescription(),movie.getDescription());
+            assertEquals(foundMovie.getPrice(),movie.getPrice());
+            assertTrue((foundMovie.getCreationDate().compareTo(beforeCreationDate) >= 0)
+                    && (foundMovie.getCreationDate().compareTo(afterCreationDate) <= 0));
+
+        } finally {
+            // Clear Database
+            if (addedMovie!=null) {
+                removeMovie(addedMovie.getMovieId());
+            }
+        }
     }
 }
 

@@ -129,9 +129,9 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
 
         /* Create "queryString". */
         String queryString = "SELECT inscriptionId, userEmail, raceId, "
-                + " creditCardNumber, dorsalNumber, inscriptionDate, collected FROM Inscription WHERE userEmail=";
+                + " creditCardNumber, dorsalNumber, inscriptionDate, collected FROM Inscription WHERE userEmail='";
         queryString += inputUserEmail;
-        queryString += " ORDER BY userEmail";
+        queryString += "'";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 

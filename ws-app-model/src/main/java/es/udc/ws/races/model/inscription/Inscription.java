@@ -25,6 +25,13 @@ public class Inscription{
 		this.inscriptionId = inscriptionId;
 	}
 
+	/* Constructor for inscribeRace. */
+	public Inscription(String userEmail, Long raceId, String creditCardNumber, int dorsalNumber, LocalDateTime inscriptionDate,
+					   Boolean collected) {
+		this(userEmail, raceId, creditCardNumber, dorsalNumber, collected);
+		this.inscriptionDate = (inscriptionDate != null) ? inscriptionDate.withNano(0) : null;
+	}
+
 	public Inscription(Long inscriptionId,String userEmail, Long raceId, String creditCardNumber, int dorsalNumber, LocalDateTime inscriptionDate,
 			Boolean collected) {
 		this(inscriptionId, userEmail, raceId, creditCardNumber, dorsalNumber, collected);

@@ -62,4 +62,42 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
         }
 
     }
+
+    @Override
+    public void update(Connection connection, Race race)
+            throws InstanceNotFoundException {
+
+        /* Create "queryString". */
+        String queryString = "UPDATE Race"
+                + " SET raceId = ?, userEmail = ?, raceId = ?, "
+                + " creditCardNumber = ?, dorsalNumber = ?, raceDate = ?, scheduleDate = ?, collected = ?, WHERE raceId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            /* Fill "preparedStatement". */
+            int i = 1;
+            preparedStatement.setLong(i++, race.getRaceId());
+            preparedStatement.setString(i++, race.getCity());
+            preparedStatement.setString(i++, race.getRaceDescription());
+            preparedStatement.setDouble(i++, race.getInscriptionPrice());
+            preparedStatement.setInt(i++, race.getMaxParticipants());
+            Timestamp date = race.getCreationDate() != null ? Timestamp.valueOf(race.getCreationDate()) : null;
+            preparedStatement.setTimestamp(i++, date);
+            Timestamp scheduleDate = race.getScheduleDate() != null ? Timestamp.valueOf(race.getScheduleDate()) : null;
+            preparedStatement.setTimestamp(i++, scheduleDate);
+            preparedStatement.setInt(i++, race.getNumberOfInscribed());
+
+            /* Execute query. */
+            int updatedRows = preparedStatement.executeUpdate();
+
+            if (updatedRows == 0) {
+                throw new InstanceNotFoundException(race.getRaceId(),
+                        Race.class.getName());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

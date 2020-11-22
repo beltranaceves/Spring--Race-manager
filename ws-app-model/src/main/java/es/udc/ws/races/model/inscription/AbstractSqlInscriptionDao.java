@@ -51,7 +51,7 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
 					: null;
 	        Boolean collected = resultSet.getBoolean(i++);
 
-            /* Return sale. */
+            /* Return inscription. */
             return new Inscription(inscriptionId, userEmail, raceId, creditCardNumber, dorsalNumber, inscriptionDate, collected);
 
         } catch (SQLException e) {
@@ -137,7 +137,6 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
             /* Execute query. */
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            /* Read movies. */
             List<Inscription> inscriptions = new ArrayList<Inscription>();
 
             while (resultSet.next()) {
@@ -155,7 +154,7 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
                         dorsalNumber, inscriptionDate, collected));
             }
 
-            /* Return movies. */
+            /* Return inscriptions. */
             return inscriptions;
 
         } catch (SQLException e) {

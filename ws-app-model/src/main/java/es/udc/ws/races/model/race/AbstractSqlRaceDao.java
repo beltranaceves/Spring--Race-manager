@@ -54,7 +54,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
                     : null;
             int numberOfInscribed = resultSet.getInt(i++);
 
-            /* Return sale. */
+            /* Return race. */
             return new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDate, scheduleDate);
 
         } catch (SQLException e) {

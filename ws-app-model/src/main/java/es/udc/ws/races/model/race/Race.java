@@ -29,6 +29,12 @@ public class Race {
         this.raceId = raceId;
     }
 
+    public Race(String city, String raceDescription, double inscriptionPrice, int maxParticipants,
+                int numberOfInscribed, LocalDateTime creationDate, LocalDateTime scheduleDate) {
+        this(city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, scheduleDate);
+        this.creationDate = (creationDate != null) ? creationDate.withNano(0) : null;
+    }
+
     public Race(Long raceId, String city, String raceDescription, double inscriptionPrice, int maxParticipants,
                 int numberOfInscribed, LocalDateTime creationDate, LocalDateTime scheduleDate) {
         this(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, scheduleDate);

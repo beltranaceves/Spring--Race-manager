@@ -94,7 +94,7 @@ public final class PropertyValidator {
     public static void validateUserEmail(String userEmailValue) throws InputValidationException {
 
         /* Regular expression of email format permitted by RFC 5322. */
-        String regex = "^[a - zA - Z0 - 9_ !#$ % &’*+ /=?`{|} ~ ^.-]+ @[a - zA - Z0 - 9. -]+$";
+        String regex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(userEmailValue);
 

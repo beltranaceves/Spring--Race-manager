@@ -9,9 +9,9 @@ public class InscriptionDateOverException extends Exception {
     private LocalDateTime dateOver;
 
     public InscriptionDateOverException(Long raceId, LocalDateTime dateOver) {
-        super("Cannot inscribe to race with id=\"" + raceId +
-                "\" because the inscription date has expired (dateOver = \"" +
-                dateOver + "\")");
+        super("Cannot inscribe to race with id = " + raceId +
+                " because the inscription date has expired (dateOver = " +
+                dateOver + ")");
         this.raceId = raceId;
         this.dateOver = dateOver;
     }

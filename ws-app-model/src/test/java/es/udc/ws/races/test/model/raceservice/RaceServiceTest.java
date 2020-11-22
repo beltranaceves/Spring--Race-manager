@@ -6,6 +6,7 @@ import es.udc.ws.races.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
+import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -33,6 +34,9 @@ public class RaceServiceTest {
 
     private final String VALID_CREDIT_CARD_NUMBER = "1234567890123456";
     private final String INVALID_CREDIT_CARD_NUMBER = "";
+
+    private final String VALID_USER_EMAIL = "test.mail@gmail.com";
+    private final String INVALID_USER_EMAIL = "test.mail@@mal.com";
 
     private static RaceService raceService = null;
 
@@ -62,7 +66,18 @@ public class RaceServiceTest {
                 0, LocalDateTime.now().plusDays(3).withNano(0));
     }
 
-    private Race createMovie(Race race) {
+    private Race pastRace() {
+        LocalDateTime creationDate = LocalDateTime.now().withNano(0);
+        LocalDateTime celebrateDate = LocalDateTime.of(2020, 11, 22, 16, 00);
+        return new Race("Coruña", "Hola", 20.50, 100, 50, creationDate, celebrateDate);
+    }
+
+    private Race futureRace() {
+        LocalDateTime fechaCelebracion = LocalDateTime.of(2050, 11, 22, 16, 00);
+        return new Race("Coruña", "Hola", 20.50, 100, 50, fechaCelebracion);
+    }
+
+    private Race createRace(Race race) {
 
         Race addedRace = null;
         try {
@@ -187,5 +202,36 @@ public class RaceServiceTest {
             }
         }
     }
+
+    @Test
+    public void testInscribeRace() {
+
+        Race race = createRace(futureRace());
+        try {
+            assertThrows(InscriptionDateOverException.class, () -> {
+                Long inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription1);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeRaceWithInvalidDate() {
+
+        Race race = createRace(pastRace());
+        try {
+            assertThrows(InscriptionDateOverException.class, () -> {
+                Long inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription1);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
 }
 

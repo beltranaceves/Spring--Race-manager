@@ -144,7 +144,7 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber)
-            throws InstanceNotFoundException, InputValidationException {
+            throws InstanceNotFoundException, InputValidationException, InscriptionDateOverException {
 
         /* Validate creditCard and userEmail. */
         PropertyValidator.validateCreditCard(creditCardNumber);
@@ -164,7 +164,7 @@ public class RaceServiceImpl implements RaceService{
                 /* Calculate last date to inscribe. */
                 LocalDateTime dateOver = race.getScheduleDate().minusHours(24);
 
-                if ( inscriptionDate.isAfter(dateOver) ) {
+                if (inscriptionDate.isAfter(dateOver)) {
                     throw new InscriptionDateOverException(raceId, dateOver);
                 } else {
                     int dorsalNumber = race.getNumberOfInscribed() + 1;
@@ -178,14 +178,14 @@ public class RaceServiceImpl implements RaceService{
                     race.setNumberOfInscribed(race.getNumberOfInscribed() + 1);
                     updateRace(race);
 
-                    /* Commit to update race. */
-                    connection.commit();
-
                     return inscription.getInscriptionId();
                 }
 
             } catch (InstanceNotFoundException e) {
                 connection.commit();
+                throw e;
+            } catch (InscriptionDateOverException e) {
+                connection.rollback();
                 throw e;
             } catch (SQLException e) {
                 connection.rollback();
@@ -193,12 +193,8 @@ public class RaceServiceImpl implements RaceService{
             } catch (RuntimeException | Error e) {
                 connection.rollback();
                 throw e;
-            } catch (InscriptionDateOverException e) {
-                connection.rollback();
-                throw e;
             }
-
-        } catch (SQLException | InscriptionDateOverException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 

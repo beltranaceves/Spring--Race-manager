@@ -12,6 +12,8 @@ import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
 import es.udc.ws.races.model.util.validation.PropertyValidator;
 import es.udc.ws.util.sql.DataSourceLocator;
 
+import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;

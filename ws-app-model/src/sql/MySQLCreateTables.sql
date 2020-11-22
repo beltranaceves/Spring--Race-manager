@@ -11,6 +11,7 @@ CREATE TABLE Race (
     inscriptionPrice DOUBLE NOT NULL,
     maxParticipants INT NOT NULL,
     creationDate DATETIME NOT NULL,
+    scheduleDate DATETIME NOT NULL,
     numberOfInscribed INT NOT NULL,
     CONSTRAINT RacePK PRIMARY KEY (raceId)
 ) ENGINE = InnoDB;

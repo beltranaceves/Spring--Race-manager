@@ -161,12 +161,8 @@ public class RaceServiceTest {
 
         try {
 
-            // Create Race
-            LocalDateTime beforeCreationDate = LocalDateTime.now().withNano(0);
-
+            // Add Race
             addedRace = raceService.addRace(race);
-
-            LocalDateTime afterCreationDate = LocalDateTime.now().withNano(0);
 
             // Find Race
             Race foundRace = raceService.findRace(addedRace.getRaceId());
@@ -189,7 +185,7 @@ public class RaceServiceTest {
         } finally {
             // Clear Database
             if (addedRace!=null) {
-                removeRace(addedRace.getRaceId());
+                //removeRace(addedRace.getRaceId());
             }
         }
     }

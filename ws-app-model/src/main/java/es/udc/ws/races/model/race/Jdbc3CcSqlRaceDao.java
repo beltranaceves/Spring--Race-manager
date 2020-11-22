@@ -9,14 +9,14 @@ public class Jdbc3CcSqlRaceDao extends AbstractSqlRaceDao {
 
         /* Create "queryString". */
         String queryString = "INSERT INTO Race"
-                + " (raceId, city, raceDescription, inscriptionPrice, maxParticipants, creationDate, numberOfInscribed)"
+                + " (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 queryString, Statement.RETURN_GENERATED_KEYS)) {
 
             /* Fill "preparedStatement". */
             int i = 1;
-            preparedStatement.setLong(i++, race.getRaceId());
             preparedStatement.setString(i++, race.getCity());
             preparedStatement.setString(i++, race.getRaceDescription());
             preparedStatement.setDouble(i++, race.getInscriptionPrice());
@@ -26,6 +26,7 @@ public class Jdbc3CcSqlRaceDao extends AbstractSqlRaceDao {
             Timestamp scheduleDate = race.getScheduleDate() != null ? Timestamp.valueOf(race.getScheduleDate()) : null;
             preparedStatement.setTimestamp(i++, scheduleDate);
             preparedStatement.setInt(i++, race.getNumberOfInscribed());
+
             /* Execute query. */
             preparedStatement.executeUpdate();
 
@@ -45,6 +46,8 @@ public class Jdbc3CcSqlRaceDao extends AbstractSqlRaceDao {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch(Exception e) {
+            return null;
         }
     }
 

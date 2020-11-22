@@ -2,11 +2,7 @@ package es.udc.ws.races.model.race;
 
 import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +17,9 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
 
         /* Create "queryString". */
         String queryString = "SELECT raceId, city, raceDescription,"
-                + "inscriptionPrice, maxParticipants, creationDate, sheduleDate, numberOfInscribed FROM Race WHERE raceId = ?";
+                + "inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed FROM Race WHERE raceId = ?";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS)) {
 
             /* Fill "preparedStatement". */
             int i = 1;

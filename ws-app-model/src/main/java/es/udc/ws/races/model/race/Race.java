@@ -14,25 +14,25 @@ public class Race {
     private int numberOfInscribed;
 
     public Race(String city, String raceDescription, double inscriptionPrice, int maxParticipants,
-                int numberOfInscribed) {
+                int numberOfInscribed, LocalDateTime scheduleDate) {
         this.city = city;
         this.raceDescription = raceDescription;
         this.inscriptionPrice = inscriptionPrice;
+        this.scheduleDate = scheduleDate;
         this.maxParticipants = maxParticipants;
         this.numberOfInscribed = numberOfInscribed;
     }
 
     public Race(Long raceId, String city, String raceDescription, double inscriptionPrice, int maxParticipants,
-                int numberOfInscribed) {
-        this(city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed);
+                int numberOfInscribed, LocalDateTime scheduleDate) {
+        this(city, raceDescription, inscriptionPrice,maxParticipants, numberOfInscribed, scheduleDate);
         this.raceId = raceId;
     }
 
     public Race(Long raceId, String city, String raceDescription, double inscriptionPrice, int maxParticipants,
                 int numberOfInscribed, LocalDateTime creationDate, LocalDateTime scheduleDate) {
-        this(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed);
+        this(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, scheduleDate);
         this.creationDate = (creationDate != null) ? creationDate.withNano(0) : null;
-        this.scheduleDate = (scheduleDate != null) ? scheduleDate.withNano(0) : null;
     }
 
     public Long getRaceId() {

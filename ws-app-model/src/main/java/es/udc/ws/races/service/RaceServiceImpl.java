@@ -165,4 +165,13 @@ public class RaceServiceImpl implements RaceService{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void removeRace(Long raceId) throws InstanceNotFoundException {
+        try (Connection connection = dataSource.getConnection()) {
+            raceDao.remove(connection, raceId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -12,4 +12,6 @@ public interface SqlRaceDao {
     public void update(Connection connection, Race race)
             throws InstanceNotFoundException;
 
+    public void remove(Connection connection, Long raceId)
+            throws InstanceNotFoundException;
 }

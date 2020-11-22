@@ -1,8 +1,8 @@
 -- ----------------------------------------------------------------------------
 -- Model
 -------------------------------------------------------------------------------
-DROP TABLE Race;
 DROP TABLE Inscription;
+DROP TABLE Race;
 
 CREATE TABLE Race (
     raceId BIGINT NOT NULL AUTO_INCREMENT,
@@ -24,5 +24,5 @@ CREATE TABLE Inscription (
     inscriptionDate DATETIME NOT NULL,
     collected TINYINT NOT NULL,
     CONSTRAINT InscriptionPK PRIMARY KEY (inscriptionId),
-    CONSTRAINT InscriptionRaceFK FOREIGN KEY (raceId) REFERENCES Inscription(raceId) ON DELETE CASCADE
+    CONSTRAINT InscriptionRaceFK FOREIGN KEY (raceId) REFERENCES Race(raceId) ON DELETE CASCADE
 ) ENGINE = InnoDB;

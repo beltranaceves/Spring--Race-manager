@@ -15,5 +15,9 @@ public interface RaceService {
 
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException;
 
-    public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber) throws InputValidationException, InstanceNotFoundException;
+    public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber) throws InputValidationException,
+            InstanceNotFoundException;
+
+    public void removeRace(Long raceId) throws InstanceNotFoundException;
+
 }

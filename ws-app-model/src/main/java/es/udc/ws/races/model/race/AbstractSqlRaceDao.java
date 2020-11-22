@@ -98,6 +98,32 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void remove(Connection connection, Long raceId)
+            throws InstanceNotFoundException {
+
+        /* Create "queryString". */
+        String queryString = "DELETE FROM Race WHERE" + " raceId = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            /* Fill "preparedStatement". */
+            int i = 1;
+            preparedStatement.setLong(i++, raceId);
+
+            /* Execute query. */
+            int removedRows = preparedStatement.executeUpdate();
+
+            if (removedRows == 0) {
+                throw new InstanceNotFoundException(raceId,
+                        Race.class.getName());
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

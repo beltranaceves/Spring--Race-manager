@@ -38,6 +38,7 @@ public class RaceServiceTest {
 
     private final String VALID_USER_EMAIL = "test.mail@gmail.com";
     private final String INVALID_USER_EMAIL = "test.mail@@mal.com";
+    private final String EMPTY_USER_EMAIL = "";
 
     private static RaceService raceService = null;
 
@@ -169,6 +170,107 @@ public class RaceServiceTest {
 
     }
 
+    /* Tests Caso de uso 4 (Alumno 2). */
+    @Test
+    public void testValidInscribeRace() throws InputValidationException, InstanceNotFoundException, InscriptionDateOverException {
+
+        Race race = createRace(futureRace());
+        Long inscription = null;
+        try {
+
+            LocalDateTime beforeInscribeDate = LocalDateTime.now().withNano(0);
+            inscription = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+
+            LocalDateTime afterInscribeDate = LocalDateTime.now().withNano(0);
+
+            // Find inscription
+            Inscription foundInscription = raceService.findInscription(inscription);
+
+            race = raceService.findRace(race.getRaceId());
+            // Check inscription
+            assertEquals(inscription, foundInscription.getInscriptionId());
+            assertEquals(VALID_CREDIT_CARD_NUMBER, foundInscription.getCreditCardNumber());
+            assertEquals(VALID_USER_EMAIL, foundInscription.getUserEmail());
+            assertEquals(race.getRaceId(), foundInscription.getRaceId());
+            assertTrue((foundInscription.getInscriptionDate().compareTo(beforeInscribeDate) >= 0)
+                    && (foundInscription.getInscriptionDate().compareTo(afterInscribeDate) <= 0));
+            assertFalse(foundInscription.getCollected());
+            assertEquals(race.getNumberOfInscribed(), foundInscription.getDorsalNumber());
+        } finally {
+            if (inscription != null) {
+                removeInscription(inscription);
+            }
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeRaceWithInvalidDate() {
+
+        Race race = createRace(pastRace());
+        try {
+            assertThrows(InscriptionDateOverException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeNonExistentRace() {
+
+        assertThrows(InstanceNotFoundException.class, () -> {
+            Long inscription = raceService.inscribeRace(NON_EXISTENT_RACE_ID, VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+            removeInscription(inscription);
+        });
+
+    }
+
+    @Test
+    public void testInscribeRaceWithInvalidEmail() {
+        Race race = createRace(futureRace());
+        try {
+            assertThrows(InputValidationException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), INVALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeRaceWithInvalidEmptyEmail() {
+        Race race = createRace(futureRace());
+        try {
+            assertThrows(InputValidationException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), EMPTY_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeRaceWithInvalidEmptyCreditCard() {
+        Race race = createRace(futureRace());
+        try {
+            assertThrows(InputValidationException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, INVALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
     //Parte alumno 3 (apartado 2)
     @Test
     public void testAddMovieAndFindMovie() throws InputValidationException, InstanceNotFoundException {
@@ -202,64 +304,6 @@ public class RaceServiceTest {
                 removeRace(addedRace.getRaceId());
             }
         }
-    }
-
-    @Test
-    public void testInscribeRace() throws InputValidationException, InstanceNotFoundException, InscriptionDateOverException {
-
-        Race race = createRace(futureRace());
-        Long inscription1 = null;
-        try {
-
-            LocalDateTime beforeInscribeDate = LocalDateTime.now().withNano(0);
-            inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
-
-            LocalDateTime afterInscribeDate = LocalDateTime.now().withNano(0);
-
-            // Find inscription
-            Inscription foundInscription = raceService.findInscription(inscription1);
-
-            race = raceService.findRace(race.getRaceId());
-            // Check inscription
-            //assertEquals(inscription1, foundInscription);
-            assertEquals(VALID_CREDIT_CARD_NUMBER, foundInscription.getCreditCardNumber());
-            assertEquals(VALID_USER_EMAIL, foundInscription.getUserEmail());
-            assertEquals(race.getRaceId(), foundInscription.getRaceId());
-            assertTrue((foundInscription.getInscriptionDate().compareTo(beforeInscribeDate) >= 0)
-                    && (foundInscription.getInscriptionDate().compareTo(afterInscribeDate) <= 0));
-            assertFalse(foundInscription.getCollected());
-            assertEquals(race.getNumberOfInscribed(), foundInscription.getDorsalNumber());
-        } finally {
-            if (inscription1 != null) {
-                removeInscription(inscription1);
-            }
-            removeRace(race.getRaceId());
-        }
-    }
-
-    @Test
-    public void testInscribeRaceWithInvalidDate() {
-
-        Race race = createRace(pastRace());
-        try {
-            assertThrows(InscriptionDateOverException.class, () -> {
-                Long inscription1 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
-                removeInscription(inscription1);
-            });
-        } finally {
-            // Clear database
-            removeRace(race.getRaceId());
-        }
-    }
-
-    @Test
-    public void testInscribeNonExistentRace() {
-
-        assertThrows(InstanceNotFoundException.class, () -> {
-            Long inscription1 = raceService.inscribeRace(NON_EXISTENT_RACE_ID, VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
-            removeInscription(inscription1);
-        });
-
     }
 
     //Parte alumno 3 (caso 6)

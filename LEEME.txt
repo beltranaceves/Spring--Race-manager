@@ -1,0 +1,8 @@
+Al inicio de la práctica trabajábamos juntos en el mismo fichero y por accidente el primer commit realizado incluye parte de los casos de uso de los demás alumnos.
+Decidimos dejarlo subido y corregimos el fallo para los siguientes commits.
+
+A continuación, se indican las funcionalidades que implementó cada uno en todas las capas:
+
+Beltrán Aceves Gil (alumno 1) -> Funcionalidades 1 y 3.
+Melisa Barro Hermida (alumno 2) -> Funcionalidades 4 y 5.
+Dimitry Demyanov Prishtchepa (alumno 3) -> Funcionalidades 2 y 6.

@@ -62,6 +62,35 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
     }
 
     @Override
+    public boolean alreadyInscribed(Connection connection, String userEmail) {
+
+        /* Create "queryString". */
+        /* Only need to know if there is an Inscription to the given userEmail. */
+        String queryString = "SELECT inscriptionId "
+                + "FROM Inscription WHERE userEmail = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+            /* Fill "preparedStatement". */
+            int i = 1;
+            preparedStatement.setString(i++, userEmail);
+
+            /* Execute query. */
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (!resultSet.next()) {
+                return false;
+            }
+
+            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
     public void update(Connection connection, Inscription inscription)
             throws InstanceNotFoundException {
 

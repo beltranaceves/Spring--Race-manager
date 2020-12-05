@@ -10,8 +10,8 @@ import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
 import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
-import es.udc.ws.races.model.util.exceptions.InputValidationException;
-import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
 
@@ -128,7 +128,7 @@ public class RaceServiceTest {
             } catch (RuntimeException | Error e) {
                 connection.rollback();
                 throw e;
-            } catch (es.udc.ws.races.model.util.exceptions.InstanceNotFoundException e) {
+            } catch (InstanceNotFoundException e) {
                 e.printStackTrace();
             }
 

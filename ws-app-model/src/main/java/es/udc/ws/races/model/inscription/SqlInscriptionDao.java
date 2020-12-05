@@ -16,6 +16,8 @@ public interface SqlInscriptionDao {
     public Inscription find(Connection connection, Long inscriptionId)
             throws InstanceNotFoundException;
 
+    public boolean alreadyInscribed(Connection connection, String userEmail);
+
     public List<Inscription> findByUserEmail(Connection connection,
             String userEmail);
 

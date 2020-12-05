@@ -179,17 +179,20 @@ public class RaceServiceImpl implements RaceService{
                     Inscription inscription = inscriptionDao.create(connection, new Inscription(userEmail, raceId, creditCardNumber, dorsalNumber,
                             inscriptionDate, collected));
 
+                    /* Change numberOfInscribed of the race and then update it. */
+                    race.setNumberOfInscribed(race.getNumberOfInscribed() + 1);
+                    raceDao.update(connection, race);
+
                     /* Commit to create inscription. */
                     connection.commit();
-
-                    /* Change numberOfInscribed of the race and then updateRace. */
-                    race.setNumberOfInscribed(race.getNumberOfInscribed() + 1);
-                    updateRace(race);
 
                     return inscription.getInscriptionId();
                 }
 
             } catch (InstanceNotFoundException e) {
+                connection.commit();
+                throw e;
+            } catch (InscriptionDateOverException e) {
                 connection.commit();
                 throw e;
             } catch (SQLException e) {

@@ -6,8 +6,8 @@ import es.udc.ws.races.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
-import es.udc.ws.races.model.util.exceptions.InscriptionDateOverException;
-import es.udc.ws.races.model.util.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
 import es.udc.ws.races.model.util.exceptions.InputValidationException;
@@ -16,7 +16,7 @@ import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.sql.SimpleDataSource;
 
 
-import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
+import static es.udc.ws.races.model.util.ModelConstants.RACE_DATA_SOURCE;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;

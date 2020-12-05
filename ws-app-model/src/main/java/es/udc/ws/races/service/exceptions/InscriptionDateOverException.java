@@ -1,4 +1,4 @@
-package es.udc.ws.races.model.util.exceptions;
+package es.udc.ws.races.service.exceptions;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package es.udc.ws.races.model.util.configuration;
+package es.udc.ws.races.model.util;
 
 public final class ModelConstants {
 

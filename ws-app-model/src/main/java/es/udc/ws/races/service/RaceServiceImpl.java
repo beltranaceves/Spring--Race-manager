@@ -6,11 +6,16 @@ import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.inscription.Inscription;
-import es.udc.ws.races.model.util.exceptions.*;
-import es.udc.ws.races.model.util.validation.PropertyValidator;
+import es.udc.ws.races.model.util.PropertyValidatorAditional;
+import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.service.exceptions.InscriptionExpirationException;
+import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.util.exceptions.InputValidationException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
+import es.udc.ws.util.validation.PropertyValidator;
 
-import static es.udc.ws.races.model.util.configuration.ModelConstants.RACE_DATA_SOURCE;
+import static es.udc.ws.races.model.util.ModelConstants.RACE_DATA_SOURCE;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -18,7 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static es.udc.ws.races.model.util.configuration.ModelConstants.*;
+import static es.udc.ws.races.model.util.ModelConstants.*;
 
 public class RaceServiceImpl implements RaceService{
 
@@ -37,7 +42,7 @@ public class RaceServiceImpl implements RaceService{
         PropertyValidator.validateMandatoryString("city", race.getCity());
         PropertyValidator.validateMandatoryString("raceDescription", race.getRaceDescription());
         PropertyValidator.validateDouble("inscriptionPrice", race.getInscriptionPrice(), 0, MAX_INSCRIPTION_PRICE);
-        PropertyValidator.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
+        PropertyValidatorAditional.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
 
     }
 
@@ -45,8 +50,8 @@ public class RaceServiceImpl implements RaceService{
 
         PropertyValidator.validateCreditCard(inscription.getCreditCardNumber());
         PropertyValidator.validateLong("raceId", inscription.getRaceId(), 0, MAX_RACE_NUMBER);
-        PropertyValidator.validateUserEmail(inscription.getUserEmail());
-        PropertyValidator.validateInt("dorsalNumber",inscription.getDorsalNumber(), 0 , MAX_DORSAL_NUMBER);
+        PropertyValidatorAditional.validateUserEmail(inscription.getUserEmail());
+        PropertyValidatorAditional.validateInt("dorsalNumber",inscription.getDorsalNumber(), 0 , MAX_DORSAL_NUMBER);
 
     }
 
@@ -155,7 +160,7 @@ public class RaceServiceImpl implements RaceService{
 
         /* Validate creditCard and userEmail. */
         PropertyValidator.validateCreditCard(creditCardNumber);
-        PropertyValidator.validateUserEmail(userEmail);
+        PropertyValidatorAditional.validateUserEmail(userEmail);
 
         try (Connection connection = dataSource.getConnection()) {
 
@@ -285,7 +290,7 @@ public class RaceServiceImpl implements RaceService{
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException {
 
         /* Validate email. */
-        PropertyValidator.validateUserEmail(userEmail);
+        PropertyValidatorAditional.validateUserEmail(userEmail);
 
         try (Connection connection = dataSource.getConnection()) {
             return inscriptionDao.findByUserEmail(connection, userEmail);

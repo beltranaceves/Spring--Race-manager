@@ -1,6 +1,6 @@
 package es.udc.ws.races.model.race;
 
-import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 import java.sql.*;
 import java.time.LocalDateTime;

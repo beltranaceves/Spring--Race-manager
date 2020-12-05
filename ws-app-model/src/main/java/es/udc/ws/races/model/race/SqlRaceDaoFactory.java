@@ -1,6 +1,7 @@
 package es.udc.ws.races.model.race;
 
-import es.udc.ws.races.model.util.configuration.ConfigurationParametersManager;
+
+import es.udc.ws.util.configuration.ConfigurationParametersManager;
 
 public class SqlRaceDaoFactory {
 

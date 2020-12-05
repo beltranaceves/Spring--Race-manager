@@ -1,6 +1,6 @@
 package es.udc.ws.races.service;
 
-import es.udc.ws.races.model.util.configuration.ConfigurationParametersManager;
+import es.udc.ws.util.configuration.ConfigurationParametersManager;
 
 public class RaceServiceFactory {
 

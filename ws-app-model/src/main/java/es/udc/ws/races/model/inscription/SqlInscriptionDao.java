@@ -1,9 +1,10 @@
 package es.udc.ws.races.model.inscription;
 
+import es.udc.ws.util.exceptions.InstanceNotFoundException;
+
 import java.sql.Connection;
 import java.util.List;
 
-import es.udc.ws.races.model.util.exceptions.InstanceNotFoundException;
 
 public interface SqlInscriptionDao {
 

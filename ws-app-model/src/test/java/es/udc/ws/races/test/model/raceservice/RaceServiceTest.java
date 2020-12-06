@@ -33,8 +33,6 @@ import java.util.List;
 public class RaceServiceTest {
 
     private final long NON_EXISTENT_RACE_ID = -1;
-    private final long NON_EXISTENT_INSCRIPTION_ID = -1;
-    private final String USER_ID = "ws-user";
 
     private final String VALID_CREDIT_CARD_NUMBER = "1234567890123456";
     private final String INVALID_CREDIT_CARD_NUMBER = "";
@@ -74,13 +72,13 @@ public class RaceServiceTest {
     private Race pastRace() {
         LocalDateTime creationDate = LocalDateTime.now().withNano(0);
         LocalDateTime celebrateDate = LocalDateTime.of(2019, 11, 22, 16, 00);
-        return new Race("A Coruña", "Ejemplo de carrera pasada.", 20.50, 100, 50, creationDate, celebrateDate);
+        return new Race("A Coruña", "Ejemplo de carrera pasada.", 20.50, 100, 0, creationDate, celebrateDate);
     }
 
     private Race futureRace() {
         LocalDateTime creationDate = LocalDateTime.now().withNano(0);
         LocalDateTime celebrationDate = LocalDateTime.of(2050, 11, 22, 16, 00);
-        return new Race("A Coruña", "Ejemplo de carrera futura.", 20.50, 100, 50, creationDate, celebrationDate);
+        return new Race("A Coruña", "Ejemplo de carrera futura.", 20.50, 100, 0, creationDate, celebrationDate);
     }
 
     private Race createRace(Race race) {
@@ -246,7 +244,8 @@ public class RaceServiceTest {
     /* Tests Caso de uso 5 (Alumno 2). */
 
     @Test
-    public void testFindInscriptionByEmail() throws InputValidationException {
+    public void testFindInscriptionByEmail() throws InputValidationException,
+            InstanceNotFoundException, InscriptionDateOverException {
 
         /* Create list of valid inscriptions. */
         List<Inscription> inscriptions = new LinkedList<Inscription>();
@@ -274,8 +273,6 @@ public class RaceServiceTest {
             assertEquals(3, foundInscriptions.size());
             assertEquals(inscriptions.get(1), foundInscriptions.get(1));
 
-        } catch (InputValidationException | InstanceNotFoundException | InscriptionDateOverException e) {
-            throw new RuntimeException(e);
         } finally {
             // Clear Database
             removeInscription(inscription4);
@@ -308,7 +305,7 @@ public class RaceServiceTest {
 
     //Parte alumno 3 (apartado 2)
     @Test
-    public void testAddRaceAndFindRace() throws InputValidationException, InstanceNotFoundException {
+    public void testAddRaceAndFindRace() throws InstanceNotFoundException {
 
         Race race = getValidRace("A Coruña", (long) 1);
         Race addedRace = null;
@@ -330,9 +327,6 @@ public class RaceServiceTest {
             assertEquals(foundRace.getInscriptionPrice(), addedRace.getInscriptionPrice());
             assertEquals(foundRace.getNumberOfInscribed(), addedRace.getNumberOfInscribed());
 
-        } catch (InstanceNotFoundException e) {
-            e.printStackTrace();
-
         } finally {
             // Clear Database
             if (addedRace!=null) {
@@ -343,12 +337,14 @@ public class RaceServiceTest {
 
     //Parte alumno 3 (caso 6)
     @Test
-    public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException {
+    public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException,
+            InscriptionDateOverException, dorsalAlreadyCollectedException {
 
         Race race = getValidRace("A Coruña", (long) 2);
         Race addedRace = null;
         Race foundRace = null;
         Long addedInscription = null;
+        Inscription collectedInscription = null;
 
         try {
 
@@ -364,17 +360,16 @@ public class RaceServiceTest {
             foundRace = raceService.findRace(addedRace.getRaceId());
             int dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
 
+            /* Check if collected of inscription is true. */
+            collectedInscription = raceService.findInscription(addedInscription);
+            assertTrue(collectedInscription.getCollected());
+
             assertEquals(foundRace.getNumberOfInscribed(), dorsalNumber);
 
-        } catch (InputValidationException e) {
-            e.printStackTrace();
-        } catch (InstanceNotFoundException e) {
-            e.printStackTrace();
-        } catch (InscriptionDateOverException e) {
-            e.printStackTrace();
-        } catch (dorsalAlreadyCollectedException e) {
-            e.printStackTrace();
         } finally {
+            if (collectedInscription != null) {
+                removeInscription(collectedInscription.getInscriptionId());
+            }
             // Clear Database
             if (addedRace!=null) {
                 removeRace(addedRace.getRaceId());
@@ -385,7 +380,7 @@ public class RaceServiceTest {
 
     //Parte alumno 3 (caso 6)
     @Test
-    public void testCollectDorsalDorsalAlreadyCollected() throws InputValidationException, InstanceNotFoundException {
+    public void testCollectDorsalDorsalAlreadyCollected() {
 
         assertThrows(dorsalAlreadyCollectedException.class, () -> {
             Race race = getValidRace("A Coruña", (long) 2);
@@ -410,12 +405,6 @@ public class RaceServiceTest {
                 dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
                 dorsalNumber = raceService.collectInscription(addedInscription, VALID_CREDIT_CARD_NUMBER);
 
-            } catch (InputValidationException e) {
-                e.printStackTrace();
-            } catch (InstanceNotFoundException e) {
-                e.printStackTrace();
-            } catch (InscriptionDateOverException e) {
-                e.printStackTrace();
             } finally {
                 // Clear Database
                 if (addedRace!=null) {
@@ -428,7 +417,7 @@ public class RaceServiceTest {
 
     //Alumno 1 (caso 1)
     @Test
-    public void testAddRace() {
+    public void testAddRace() throws InputValidationException {
         Race race = getValidRace("Tijuana", (long) 2);
         Race addedRace = null;
         try {
@@ -440,8 +429,6 @@ public class RaceServiceTest {
             assertEquals(race.getMaxParticipants(), addedRace.getMaxParticipants());
             assertEquals(race.getRaceDescription(), addedRace.getRaceDescription());
             assertEquals(race.getCity(), addedRace.getCity());
-        } catch (InputValidationException e) {
-            e.printStackTrace();
         } finally {
             // Clear Database
             if (addedRace!=null) {
@@ -453,7 +440,7 @@ public class RaceServiceTest {
 
     //Alumno 1 (caso 3)
     @Test
-    public void testFindRaceByDate() {
+    public void testFindRaceByDate() throws InputValidationException {
         Race race1 = getValidRace("Vigo", (long) 3);
         Race race2 = getValidRace("Cangas", (long) -3);
         race2.setScheduleDate(LocalDateTime.now().minusDays(2));
@@ -463,8 +450,6 @@ public class RaceServiceTest {
             race2 = raceService.addRace(race2);
             List<Race> races = raceService.findRacesByDate(LocalDateTime.now());
             assertEquals(races.get(0).getRaceId(), race1.getRaceId());
-        } catch (InputValidationException e) {
-            e.printStackTrace();
         } finally {
             // Clear Database
             if (race1!=null) {
@@ -479,18 +464,25 @@ public class RaceServiceTest {
 
     //Alumno 1 (caso 3)
     @Test
-    public void testFindRaceByDateAndCity() {
+    public void testFindRaceByDateAndCity() throws InputValidationException {
         Race race1 = getValidRace("Vigo", (long) 3);
         Race race2 = getValidRace("Cangas", (long) -3);
         race2.setScheduleDate(LocalDateTime.now().minusDays(2));
-        try
-        {
+        try {
             race1 = raceService.addRace(race1);
             race2 = raceService.addRace(race2);
             List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now(), "Vigo");
             assertEquals(races.get(0).getRaceId(), race1.getRaceId());
-        } catch (InputValidationException e) {
-            e.printStackTrace();
+        } finally {
+            // Clear Database
+            if (race1!=null) {
+                removeRace(race1.getRaceId());
+            }
+            // Clear Database
+            if (race2!=null) {
+                removeRace(race2.getRaceId());
+            }
+
         }
     }
 }

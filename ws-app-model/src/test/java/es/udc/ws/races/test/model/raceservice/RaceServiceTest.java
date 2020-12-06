@@ -6,7 +6,9 @@ import es.udc.ws.races.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.races.model.race.Race;
 import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
+import es.udc.ws.races.service.exceptions.AlreadyInscribedException;
 import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.service.exceptions.MaxParticipantsException;
 import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
 import es.udc.ws.races.service.RaceService;
 import es.udc.ws.races.service.RaceServiceFactory;
@@ -138,7 +140,8 @@ public class RaceServiceTest {
 
     /* Tests Caso de uso 4 (Alumno 2). */
     @Test
-    public void testValidInscribeRace() throws InputValidationException, InstanceNotFoundException, InscriptionDateOverException {
+    public void testValidInscribeRace() throws InputValidationException, InstanceNotFoundException,
+            AlreadyInscribedException, InscriptionDateOverException, MaxParticipantsException {
 
         Race race = createRace(futureRace());
         Long inscription = null;
@@ -245,7 +248,7 @@ public class RaceServiceTest {
 
     @Test
     public void testFindInscriptionByEmail() throws InputValidationException,
-            InstanceNotFoundException, InscriptionDateOverException {
+            InstanceNotFoundException, AlreadyInscribedException, InscriptionDateOverException, MaxParticipantsException {
 
         /* Create list of valid inscriptions. */
         List<Inscription> inscriptions = new LinkedList<Inscription>();
@@ -337,8 +340,8 @@ public class RaceServiceTest {
 
     //Parte alumno 3 (caso 6)
     @Test
-    public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException,
-            InscriptionDateOverException, dorsalAlreadyCollectedException {
+    public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException, AlreadyInscribedException,
+            InscriptionDateOverException, MaxParticipantsException, dorsalAlreadyCollectedException {
 
         Race race = getValidRace("A Coruña", (long) 2);
         Race addedRace = null;

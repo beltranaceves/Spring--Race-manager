@@ -7,9 +7,7 @@ import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.inscription.Inscription;
 import es.udc.ws.races.model.util.PropertyValidatorAditional;
-import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
-import es.udc.ws.races.service.exceptions.InscriptionExpirationException;
-import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.races.service.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
@@ -156,7 +154,8 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber)
-            throws InstanceNotFoundException, InputValidationException, InscriptionDateOverException {
+            throws InstanceNotFoundException, InputValidationException, AlreadyInscribedException,
+            InscriptionDateOverException, MaxParticipantsException {
 
         /* Validate creditCard and userEmail. */
         PropertyValidator.validateCreditCard(creditCardNumber);
@@ -176,8 +175,14 @@ public class RaceServiceImpl implements RaceService{
                 /* Calculate last date to inscribe. */
                 LocalDateTime dateOver = race.getScheduleDate().minusHours(24);
 
+                if (inscriptionDao.alreadyInscribed(connection, race.getRaceId(), userEmail)) {
+                    throw new AlreadyInscribedException(raceId, userEmail);
+                }
                 if (inscriptionDate.isAfter(dateOver)) {
                     throw new InscriptionDateOverException(raceId, dateOver);
+                }
+                if (race.getNumberOfInscribed() == MAX_NUMBER_OF_PARTICIPANTS) {
+                    throw new MaxParticipantsException(race.getRaceId());
                 } else {
                     int dorsalNumber = race.getNumberOfInscribed() + 1;
                     Boolean collected = false;
@@ -194,10 +199,16 @@ public class RaceServiceImpl implements RaceService{
                     return inscription.getInscriptionId();
                 }
 
+            } catch (AlreadyInscribedException e) {
+                connection.commit();
+                throw e;
             } catch (InstanceNotFoundException e) {
                 connection.commit();
                 throw e;
             } catch (InscriptionDateOverException e) {
+                connection.commit();
+                throw e;
+            } catch (MaxParticipantsException e) {
                 connection.commit();
                 throw e;
             } catch (SQLException e) {

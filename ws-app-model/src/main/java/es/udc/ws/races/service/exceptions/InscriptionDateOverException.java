@@ -28,7 +28,7 @@ public class InscriptionDateOverException extends Exception {
         this.dateOver = dateOver;
     }
 
-    public void setInscriptionId(Long raceId) {
+    public void setRaceId(Long raceId) {
         this.raceId = raceId;
     }
 }

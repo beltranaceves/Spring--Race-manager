@@ -83,6 +83,12 @@ public class RaceServiceTest {
         return new Race("A Coruña", "Ejemplo de carrera futura.", 20.50, 100, 0, creationDate, celebrationDate);
     }
 
+    private Race maxParticipantsRace() {
+        LocalDateTime creationDate = LocalDateTime.now().withNano(0);
+        LocalDateTime celebrationDate = LocalDateTime.of(2050, 11, 22, 16, 00);
+        return new Race("A Coruña", "Ejemplo de carrera futura.", 20.50, 50, 50, creationDate, celebrationDate);
+    }
+
     private Race createRace(Race race) {
 
         Race addedRace = null;
@@ -170,6 +176,38 @@ public class RaceServiceTest {
             if (inscription != null) {
                 removeInscription(inscription);
             }
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testInscribeRaceAlreadyInscribedException() {
+
+        Race race = createRace(futureRace());
+        try {
+            assertThrows(AlreadyInscribedException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                Long inscription2 = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+                removeInscription(inscription2);
+            });
+        } finally {
+            // Clear database
+            removeRace(race.getRaceId());
+        }
+    }
+
+    @Test
+    public void testMaxParticipantsException() {
+
+        Race race = createRace(maxParticipantsRace());
+        try {
+            assertThrows(MaxParticipantsException.class, () -> {
+                Long inscription = raceService.inscribeRace(race.getRaceId(), VALID_USER_EMAIL, VALID_CREDIT_CARD_NUMBER);
+                removeInscription(inscription);
+            });
+        } finally {
+            // Clear database
             removeRace(race.getRaceId());
         }
     }

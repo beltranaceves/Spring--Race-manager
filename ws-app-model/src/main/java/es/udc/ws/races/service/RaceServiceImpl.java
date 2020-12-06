@@ -181,7 +181,7 @@ public class RaceServiceImpl implements RaceService{
                 if (inscriptionDate.isAfter(dateOver)) {
                     throw new InscriptionDateOverException(raceId, dateOver);
                 }
-                if (race.getNumberOfInscribed() == MAX_NUMBER_OF_PARTICIPANTS) {
+                if (race.getNumberOfInscribed() == race.getMaxParticipants()) {
                     throw new MaxParticipantsException(race.getRaceId());
                 } else {
                     int dorsalNumber = race.getNumberOfInscribed() + 1;

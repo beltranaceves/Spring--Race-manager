@@ -62,17 +62,18 @@ public abstract class AbstractSqlInscriptionDao implements SqlInscriptionDao {
     }
 
     @Override
-    public boolean alreadyInscribed(Connection connection, String userEmail) {
+    public boolean alreadyInscribed(Connection connection, Long raceId, String userEmail) {
 
         /* Create "queryString". */
-        /* Only need to know if there is an Inscription to the given userEmail. */
+        /* Only need to know if the user is inscribed in the race. */
         String queryString = "SELECT inscriptionId "
-                + "FROM Inscription WHERE userEmail = ?";
+                + "FROM Inscription WHERE raceId = ? AND userEmail = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
             /* Fill "preparedStatement". */
             int i = 1;
+            preparedStatement.setLong(i++, raceId);
             preparedStatement.setString(i++, userEmail);
 
             /* Execute query. */

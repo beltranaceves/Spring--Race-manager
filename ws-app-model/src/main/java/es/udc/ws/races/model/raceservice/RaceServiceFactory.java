@@ -1,4 +1,4 @@
-package es.udc.ws.races.service;
+package es.udc.ws.races.model.raceservice;
 
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 

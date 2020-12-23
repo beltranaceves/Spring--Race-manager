@@ -1,4 +1,4 @@
-package es.udc.ws.races.service.exceptions;
+package es.udc.ws.races.model.raceservice.exceptions;
 
 @SuppressWarnings("serial")
 public class MaxParticipantsException extends Exception {

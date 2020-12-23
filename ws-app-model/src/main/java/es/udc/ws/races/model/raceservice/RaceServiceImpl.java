@@ -1,4 +1,4 @@
-package es.udc.ws.races.service;
+package es.udc.ws.races.model.raceservice;
 
 import es.udc.ws.races.model.inscription.SqlInscriptionDao;
 import es.udc.ws.races.model.inscription.SqlInscriptionDaoFactory;
@@ -7,7 +7,7 @@ import es.udc.ws.races.model.race.SqlRaceDao;
 import es.udc.ws.races.model.race.SqlRaceDaoFactory;
 import es.udc.ws.races.model.inscription.Inscription;
 import es.udc.ws.races.model.util.PropertyValidatorAditional;
-import es.udc.ws.races.service.exceptions.*;
+import es.udc.ws.races.model.raceservice.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;

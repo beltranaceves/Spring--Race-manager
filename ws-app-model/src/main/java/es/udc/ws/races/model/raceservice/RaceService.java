@@ -1,11 +1,11 @@
-package es.udc.ws.races.service;
+package es.udc.ws.races.model.raceservice;
 
 import es.udc.ws.races.model.inscription.Inscription;
 import es.udc.ws.races.model.race.Race;
-import es.udc.ws.races.service.exceptions.AlreadyInscribedException;
-import es.udc.ws.races.service.exceptions.InscriptionDateOverException;
-import es.udc.ws.races.service.exceptions.MaxParticipantsException;
-import es.udc.ws.races.service.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.races.model.raceservice.exceptions.AlreadyInscribedException;
+import es.udc.ws.races.model.raceservice.exceptions.InscriptionDateOverException;
+import es.udc.ws.races.model.raceservice.exceptions.MaxParticipantsException;
+import es.udc.ws.races.model.raceservice.exceptions.dorsalAlreadyCollectedException;
 
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;

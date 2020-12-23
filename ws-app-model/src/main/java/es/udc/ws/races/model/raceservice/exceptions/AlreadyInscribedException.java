@@ -1,6 +1,4 @@
-package es.udc.ws.races.service.exceptions;
-
-import java.time.LocalDateTime;
+package es.udc.ws.races.model.raceservice.exceptions;
 
 @SuppressWarnings("serial")
 public class AlreadyInscribedException extends Exception {

@@ -9,6 +9,13 @@ public class JsonToRestInscriptionDtoConversor {
     public static ObjectNode toObjectNode(RestInscriptionDto inscription) {
 
         ObjectNode inscriptionNode = JsonNodeFactory.instance.objectNode();
+
+        if (inscription.getInscriptionId() != null) {
+            inscriptionNode.put("inscriptionId", inscription.getInscriptionId());
+        }
+        inscriptionNode.put("raceId", inscription.getRaceId()).
+                put("dorsalNumber", inscription.getDorsalNumber()).
+                put("collected", inscription.getCollected());
         
         return inscriptionNode;
     }

@@ -38,7 +38,7 @@ public class JsonToExceptionConversor {
 
         ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
 
-        exceptionObject.put("errorType", "AlreadyInscribedException");
+        exceptionObject.put("errorType", "AlreadyInscribed");
         exceptionObject.put("raceId", (ex.getRaceId() != null) ? ex.getRaceId() : null);
         if (ex.getUserEmail() != null) {
             exceptionObject.put("userEmail", ex.getUserEmail());
@@ -53,7 +53,7 @@ public class JsonToExceptionConversor {
 
         ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
 
-        exceptionObject.put("errorType", "InscriptionDateOverExpiration");
+        exceptionObject.put("errorType", "InscriptionDateOver");
         exceptionObject.put("raceId", (ex.getRaceId() != null) ? ex.getRaceId() : null);
         if (ex.getDateOver() != null) {
             exceptionObject.put("dateOver", ex.getDateOver().toString());
@@ -68,7 +68,7 @@ public class JsonToExceptionConversor {
 
         ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
 
-        exceptionObject.put("errorType", "MaxParticipantsExpiration");
+        exceptionObject.put("errorType", "MaxParticipants");
         exceptionObject.put("raceId", (ex.getRaceId() != null) ? ex.getRaceId() : null);
         if (ex.getMaxParticipants() != 0) {
             exceptionObject.put("maxParticipants", ex.getMaxParticipants());

@@ -10,6 +10,7 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.json.ObjectMapperFactory;
 import es.udc.ws.util.json.exceptions.ParsingException;
+import org.apache.http.HttpStatus;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -24,10 +25,22 @@ public class JsonToClientExceptionConversor {
                 throw new ParsingException("Unrecognized JSON (object expected)");
             } else {
                 String errorType = rootNode.get("errorType").textValue();
-                if (errorType.equals("InputValidation")) {
-                    return toInputValidationException(rootNode);
-                } else {
-                    throw new ParsingException("Unrecognized error type: " + errorType);
+                switch (errorType) {
+
+                    case "InputValidation":
+                        return toInputValidationException(rootNode);
+
+                    case "AlreadyInscribed":
+                        return toAlreadyInscribedException(rootNode);
+
+                    case "InscriptionDateOver":
+                        return toInscriptionDateOverException(rootNode);
+
+                    case "MaxParticipants":
+                        return toMaxParticipantsException(rootNode);
+
+                    default:
+                        throw new ParsingException("Unrecognized error type: " + errorType);
                 }
             }
         } catch (ParsingException e) {

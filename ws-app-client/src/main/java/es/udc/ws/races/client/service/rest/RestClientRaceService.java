@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class RestClientRaceService implements ClientRaceService {
@@ -31,7 +32,22 @@ public class RestClientRaceService implements ClientRaceService {
 
     public List<ClientInscriptionDto> findInscriptionByUserEmail(String userEmail) throws InputValidationException {
 
-        return null;
+        try {
+
+            HttpResponse response = Request.Get(getEndpointAddress() + "inscriptions?useremail="
+                    + URLEncoder.encode(userEmail, "UTF-8")).
+                    execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_OK, response);
+
+            return JsonToClientInscriptionDtoConversor.toClientInscriptionDtos(response.getEntity()
+                    .getContent());
+
+        } catch (InputValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

@@ -4,7 +4,6 @@ import es.udc.ws.app.model.race.Race;
 import es.udc.ws.app.model.race.SqlRaceDao;
 import es.udc.ws.app.model.race.SqlRaceDaoFactory;
 import es.udc.ws.app.model.raceservice.exceptions.*;
-import es.udc.ws.app.model.util.ModelConstants;
 import es.udc.ws.app.model.inscription.SqlInscriptionDao;
 import es.udc.ws.app.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.app.model.inscription.Inscription;
@@ -13,6 +12,8 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.sql.DataSourceLocator;
 import es.udc.ws.util.validation.PropertyValidator;
+
+import static es.udc.ws.app.model.util.ModelConstants.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -27,7 +28,7 @@ public class RaceServiceImpl implements RaceService{
     private SqlInscriptionDao inscriptionDao = null;
 
     public RaceServiceImpl() {
-        dataSource = DataSourceLocator.getDataSource(ModelConstants.RACE_DATA_SOURCE);
+        dataSource = DataSourceLocator.getDataSource(RACE_DATA_SOURCE);
         raceDao = SqlRaceDaoFactory.getDao();
         inscriptionDao = SqlInscriptionDaoFactory.getDao();
     }
@@ -36,17 +37,17 @@ public class RaceServiceImpl implements RaceService{
 
         PropertyValidator.validateMandatoryString("city", race.getCity());
         PropertyValidator.validateMandatoryString("raceDescription", race.getRaceDescription());
-        PropertyValidator.validateDouble("inscriptionPrice", race.getInscriptionPrice(), 0, ModelConstants.MAX_INSCRIPTION_PRICE);
-        PropertyValidatorAditional.validateInt("maxParticipants", race.getMaxParticipants(), 0, ModelConstants.MAX_NUMBER_OF_PARTICIPANTS);
+        PropertyValidator.validateDouble("inscriptionPrice", race.getInscriptionPrice(), 0, MAX_INSCRIPTION_PRICE);
+        PropertyValidatorAditional.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
 
     }
 
     private void validateInscription(Inscription inscription) throws InputValidationException {
 
         PropertyValidator.validateCreditCard(inscription.getCreditCardNumber());
-        PropertyValidator.validateLong("raceId", inscription.getRaceId(), 0, ModelConstants.MAX_RACE_NUMBER);
+        PropertyValidator.validateLong("raceId", inscription.getRaceId(), 0, MAX_RACE_NUMBER);
         PropertyValidatorAditional.validateUserEmail(inscription.getUserEmail());
-        PropertyValidatorAditional.validateInt("dorsalNumber",inscription.getDorsalNumber(), 0 , ModelConstants.MAX_DORSAL_NUMBER);
+        PropertyValidatorAditional.validateInt("dorsalNumber",inscription.getDorsalNumber(), 0 , MAX_DORSAL_NUMBER);
 
     }
 

@@ -10,21 +10,19 @@
     <display-name>WS App Service</display-name>
 
     <!-- REST service -->
-    <!-- Fill XXX and uncomment the following lines --> 
-    <!--
+    <!-- Inscriptions servlet -->
     <servlet>
-        <display-name>XXXServlet</display-name>
-        <servlet-name>XXXServlet</servlet-name>
+        <display-name>InscriptionsServlet</display-name>
+        <servlet-name>InscriptionsServlet</servlet-name>
         <servlet-class>
-            es.udc.ws.app.restservice.servlets.XXXServlet
+            es.udc.ws.app.restservice.servlets.InscriptionsServlet
         </servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>XXXServlet</servlet-name>
-        <url-pattern>/xxx/*</url-pattern>
+        <servlet-name>InscriptionsServlet</servlet-name>
+        <url-pattern>/inscriptions/*</url-pattern>
     </servlet-mapping>
-    -->
 
    <!-- Thrift service -->
    <!-- Fill XXX and uncomment the following lines --> 

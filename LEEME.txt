@@ -1,9 +1,6 @@
-Al inicio de la práctica trabajábamos juntos en el mismo fichero y por accidente el primer commit realizado incluye parte de los casos de uso de los demás alumnos.
-Decidimos dejarlo subido y corregimos el fallo para los siguientes commits.
+--- SEGUNDA ITERACIÓN ---
 
-El último commit además pertenece a Beltrán Aceves Gil, por complicaciones con su equipo tuvo que terminar su trabajo en el de Dimitry
-
-A continuación, se indican las funcionalidades que implementó cada uno en todas las capas:
+Indicamos las funcionalidades que implementó cada alumno para la segunda iteración:
 
 Beltrán Aceves Gil (alumno 1) -> Funcionalidades 1 y 3.
 Melisa Barro Hermida (alumno 2) -> Funcionalidades 4 y 5.

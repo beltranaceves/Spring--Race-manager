@@ -7,7 +7,7 @@ public class ClientAlreadyInscribedException extends Exception {
 
     public ClientAlreadyInscribedException(Long raceId, String userEmail) {
         super("Cannot inscribe to race with id = " + raceId +
-                " because the user with email " + userEmail + "is already inscribed.");
+                " because the user with email " + userEmail + " is already inscribed.");
         this.raceId = raceId;
         this.userEmail = userEmail;
     }

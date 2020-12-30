@@ -23,7 +23,7 @@ public class RaceServiceClient {
 
         if ("-reg".equalsIgnoreCase(args[0])) {
 
-            validateArgs(args, 4, new int[] {2});
+            validateArgs(args, 4, new int[] {1});
 
             // [register] RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>
 

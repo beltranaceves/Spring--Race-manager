@@ -26,7 +26,7 @@ public interface RaceService {
             InstanceNotFoundException, AlreadyInscribedException, InscriptionDateOverException, MaxParticipantsException;
 
     public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
-            dorsalAlreadyCollectedException, InputValidationException, creditCardDoesNotMatchException;
+            DorsalAlreadyCollectedException, InputValidationException, CreditCardDoesNotMatchException;
 
     public void removeRace(Long raceId) throws InstanceNotFoundException;
 

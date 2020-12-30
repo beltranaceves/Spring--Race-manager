@@ -2,11 +2,9 @@ package es.udc.ws.app.restservice.json;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import es.udc.ws.app.model.raceservice.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
-import es.udc.ws.app.model.raceservice.exceptions.AlreadyInscribedException;
-import es.udc.ws.app.model.raceservice.exceptions.InscriptionDateOverException;
-import es.udc.ws.app.model.raceservice.exceptions.MaxParticipantsException;
 
 public class JsonToExceptionConversor {
 
@@ -78,5 +76,25 @@ public class JsonToExceptionConversor {
 
         return exceptionObject;
     }
-}
 
+    public static ObjectNode toDorsalAlreadyCollectedException(DorsalAlreadyCollectedException ex) {
+
+        ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+
+        exceptionObject.put("errorType", "AlreadyCollectedException");
+        exceptionObject.put("inscriptionId", (ex.getInscriptionID() != null) ? ex.getInscriptionID() : null);
+
+        return exceptionObject;
+    }
+
+    public static ObjectNode toCreditCardDoesNotMatchException(CreditCardDoesNotMatchException ex) {
+
+        ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
+
+        exceptionObject.put("errorType", "CreditCardDoesNotMatchException");
+        exceptionObject.put("creditCard1", (ex.getCreditCard1() != null) ? ex.getCreditCard1() : null);
+        exceptionObject.put("creditCard2", (ex.getCreditCard2() != null) ? ex.getCreditCard2() : null);
+
+        return exceptionObject;
+    }
+}

@@ -259,7 +259,7 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
-            dorsalAlreadyCollectedException, InputValidationException, creditCardDoesNotMatchException {
+            DorsalAlreadyCollectedException, InputValidationException, CreditCardDoesNotMatchException {
 
         //validateInscription(inscription);
 
@@ -272,10 +272,10 @@ public class RaceServiceImpl implements RaceService{
             validateInscription(inscription);
 
             if (!inscription.getCreditCardNumber().contentEquals(creditCardNumber)) {
-                throw new creditCardDoesNotMatchException(creditCardNumber, inscription.getCreditCardNumber());
+                throw new CreditCardDoesNotMatchException(creditCardNumber, inscription.getCreditCardNumber());
             }
             if (inscription.getCollected()) {
-                throw new dorsalAlreadyCollectedException();
+                throw new DorsalAlreadyCollectedException(inscriptionId);
             } else {
                 inscription.setCollected(true);
                 inscriptionDao.update(connection, inscription);

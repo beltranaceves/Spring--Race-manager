@@ -376,7 +376,7 @@ public class RaceServiceTest {
     //Alumno 3 (caso 6)
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException, AlreadyInscribedException,
-            InscriptionDateOverException, MaxParticipantsException, dorsalAlreadyCollectedException, creditCardDoesNotMatchException {
+            InscriptionDateOverException, MaxParticipantsException, DorsalAlreadyCollectedException, CreditCardDoesNotMatchException {
 
         Race race = getValidRace("A Coruña", (long) 2);
         Race addedRace = null;
@@ -419,7 +419,7 @@ public class RaceServiceTest {
     @Test
     public void testCollectDorsalCreditCardDoesNotMatch() {
 
-        assertThrows(creditCardDoesNotMatchException.class, () -> {
+        assertThrows(CreditCardDoesNotMatchException.class, () -> {
             Race race = getValidRace("A Coruña", (long) 2);
             Race addedRace = null;
             Race foundRace;
@@ -454,7 +454,7 @@ public class RaceServiceTest {
     @Test
     public void testCollectDorsalDorsalAlreadyCollected() {
 
-        assertThrows(dorsalAlreadyCollectedException.class, () -> {
+        assertThrows(DorsalAlreadyCollectedException.class, () -> {
             Race race = getValidRace("A Coruña", (long) 2);
             Race addedRace = null;
             Race foundRace;

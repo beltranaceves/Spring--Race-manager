@@ -6,10 +6,7 @@ import es.udc.ws.app.model.inscription.SqlInscriptionDaoFactory;
 import es.udc.ws.app.model.race.Race;
 import es.udc.ws.app.model.race.SqlRaceDao;
 import es.udc.ws.app.model.race.SqlRaceDaoFactory;
-import es.udc.ws.app.model.raceservice.exceptions.AlreadyInscribedException;
-import es.udc.ws.app.model.raceservice.exceptions.InscriptionDateOverException;
-import es.udc.ws.app.model.raceservice.exceptions.MaxParticipantsException;
-import es.udc.ws.app.model.raceservice.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.app.model.raceservice.exceptions.*;
 import es.udc.ws.app.model.raceservice.RaceService;
 import es.udc.ws.app.model.raceservice.RaceServiceFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -103,11 +100,11 @@ public class RaceServiceTest {
     private void removeRace(Long raceId) {
 
         try {
+
             raceService.removeRace(raceId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void removeInscription(Long inscriptionId) {
@@ -379,7 +376,7 @@ public class RaceServiceTest {
     //Alumno 3 (caso 6)
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException, AlreadyInscribedException,
-            InscriptionDateOverException, MaxParticipantsException, dorsalAlreadyCollectedException {
+            InscriptionDateOverException, MaxParticipantsException, dorsalAlreadyCollectedException, creditCardDoesNotMatchException {
 
         Race race = getValidRace("A Coruña", (long) 2);
         Race addedRace = null;
@@ -426,8 +423,8 @@ public class RaceServiceTest {
         assertThrows(dorsalAlreadyCollectedException.class, () -> {
             Race race = getValidRace("A Coruña", (long) 2);
             Race addedRace = null;
-            Race foundRace = null;
-            Long addedInscription = null;
+            Race foundRace;
+            Long addedInscription;
 
             try {
 

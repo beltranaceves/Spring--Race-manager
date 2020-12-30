@@ -1,11 +1,8 @@
 package es.udc.ws.app.model.raceservice;
 
 import es.udc.ws.app.model.race.Race;
-import es.udc.ws.app.model.raceservice.exceptions.InscriptionDateOverException;
-import es.udc.ws.app.model.raceservice.exceptions.dorsalAlreadyCollectedException;
+import es.udc.ws.app.model.raceservice.exceptions.*;
 import es.udc.ws.app.model.inscription.Inscription;
-import es.udc.ws.app.model.raceservice.exceptions.AlreadyInscribedException;
-import es.udc.ws.app.model.raceservice.exceptions.MaxParticipantsException;
 
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -29,7 +26,7 @@ public interface RaceService {
             InstanceNotFoundException, AlreadyInscribedException, InscriptionDateOverException, MaxParticipantsException;
 
     public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
-            dorsalAlreadyCollectedException, InputValidationException;
+            dorsalAlreadyCollectedException, InputValidationException, creditCardDoesNotMatchException;
 
     public void removeRace(Long raceId) throws InstanceNotFoundException;
 

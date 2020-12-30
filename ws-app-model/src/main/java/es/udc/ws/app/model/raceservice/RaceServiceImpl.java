@@ -259,7 +259,9 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
-            dorsalAlreadyCollectedException, InputValidationException {
+            dorsalAlreadyCollectedException, InputValidationException, creditCardDoesNotMatchException {
+
+        //validateInscription(inscription);
 
         try (Connection connection = dataSource.getConnection()) {
 
@@ -267,15 +269,21 @@ public class RaceServiceImpl implements RaceService{
             LocalDateTime now = LocalDateTime.now();
             Race race = findRace(inscription.getRaceId());
 
-            if (inscription.getCollected()) {
-                throw new dorsalAlreadyCollectedException();
+            validateInscription(inscription);
+
+            if (inscription.getCreditCardNumber() == creditCardNumber) {
+                throw new creditCardDoesNotMatchException(creditCardNumber, inscription.getCreditCardNumber());
             } else {
-                if (race.getScheduleDate().isAfter(now)) {
-                    inscription.setCollected(true);
-                    updateInscription(inscription);
-                    return inscription.getDorsalNumber();
+                if (inscription.getCollected()) {
+                    throw new dorsalAlreadyCollectedException();
                 } else {
-                    throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
+                    if (race.getScheduleDate().isAfter(now)) {
+                        inscription.setCollected(true);
+                        updateInscription(inscription);
+                        return inscription.getDorsalNumber();
+                    } else {
+                        throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
+                    }
                 }
             }
 

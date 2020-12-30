@@ -19,8 +19,6 @@ public interface RaceService {
 
     public Race findRace(Long raceId) throws InstanceNotFoundException;
 
-    public List<Race> findRacesByDate(LocalDateTime scheduleDate) throws InputValidationException;
-
     public List<Race> findRacesByDateAndCity(LocalDateTime scheduleDate, String city) throws InputValidationException;
 
     public List<Inscription> findInscriptionByUserEmail(String userEmail) throws InputValidationException;

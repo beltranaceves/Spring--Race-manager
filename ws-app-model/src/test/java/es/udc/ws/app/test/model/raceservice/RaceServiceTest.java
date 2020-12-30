@@ -294,9 +294,9 @@ public class RaceServiceTest {
         Race race2 = createRace(futureRace());
         Race race3 = createRace(futureRace());
         Race race4 = createRace(futureRace());
-        Long inscription1 = null;
-        Long inscription2 = null;
-        Long inscription3 = null;
+        Long inscription1;
+        Long inscription2;
+        Long inscription3;
         Long inscription4 = null;
         try {
 
@@ -344,7 +344,7 @@ public class RaceServiceTest {
         });
     }
 
-    //Parte alumno 3 (apartado 2)
+    //Alumno 3 (caso 2)
     @Test
     public void testAddRaceAndFindRace() throws InstanceNotFoundException {
 
@@ -376,7 +376,7 @@ public class RaceServiceTest {
         }
     }
 
-    //Parte alumno 3 (caso 6)
+    //Alumno 3 (caso 6)
     @Test
     public void testCollectDorsal() throws InputValidationException, InstanceNotFoundException, AlreadyInscribedException,
             InscriptionDateOverException, MaxParticipantsException, dorsalAlreadyCollectedException {
@@ -419,7 +419,7 @@ public class RaceServiceTest {
     }
 
 
-    //Parte alumno 3 (caso 6)
+    //Alumno 3 (caso 6)
     @Test
     public void testCollectDorsalDorsalAlreadyCollected() {
 
@@ -489,7 +489,7 @@ public class RaceServiceTest {
         {
             race1 = raceService.addRace(race1);
             race2 = raceService.addRace(race2);
-            List<Race> races = raceService.findRacesByDate(LocalDateTime.now());
+            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now(),null);
             assertEquals(races.get(0).getRaceId(), race1.getRaceId());
         } finally {
             // Clear Database

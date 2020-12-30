@@ -14,9 +14,6 @@ public interface SqlRaceDao {
     public Race find(Connection connection, Long raceId)
             throws InstanceNotFoundException;
 
-    public List<Race> findByDate(Connection connection,
-                                 LocalDateTime creationDate);
-
     public List<Race> findByDateAndCity(Connection connection,
                                         LocalDateTime creationDate, String city);
 

@@ -120,115 +120,110 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    @Override
-    public List<Race> findByDate(Connection connection, LocalDateTime creationDate) {
-
-        /* Create "queryString". */
-        String queryString = "SELECT raceId, city, raceDescription,  "
-                + " inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed FROM Race";
-        queryString += " WHERE scheduleDate > (?) ";
-
-        queryString += " ORDER BY creationDate";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
-
-            int i = 1;
-            Timestamp timestamp = Timestamp.valueOf(creationDate);
-            preparedStatement.setTimestamp(i++, timestamp);
-
-            /* Execute query. */
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            /* Read movies. */
-            List<Race> races = new ArrayList<Race>();
-
-            while (resultSet.next()) {
-
-                i = 1;
-                Long raceId = resultSet.getLong(i++);
-                String city = resultSet.getString(i++);
-                String raceDescription = resultSet.getString(i++);
-                double inscriptionPrice = resultSet.getDouble(i++);
-                int maxParticipants = resultSet.getInt(i++);
-                Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
-                LocalDateTime creationDateTime = creationDateAsTimestamp != null
-                        ? creationDateAsTimestamp.toLocalDateTime()
-                        : null;
-                Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
-                LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
-                        ? scheduleDateAsTimestamp.toLocalDateTime()
-                        : null;
-                int numberOfInscribed = resultSet.getInt(i++);
-
-                /* Return sale. */
-                races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
-
-            }
-
-            /* Return movies. */
-            return races;
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
     public List<Race> findByDateAndCity(Connection connection, LocalDateTime creationDate, String inputCity) {
 
-        /* Create "queryString". */
         String queryString = "SELECT raceId, city, raceDescription,  "
                 + " inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed FROM Race";
-        queryString += " WHERE scheduleDate > ? ";
-        queryString += " AND city = ? ";
-        queryString += " ORDER BY city, creationDate";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+        if (inputCity != null) {
 
-            int i = 1;
-            Timestamp timestamp = Timestamp.valueOf(creationDate);
-            preparedStatement.setTimestamp(i++, timestamp);
-            preparedStatement.setString(i++, inputCity);
+            /* Create "queryString". */
+            queryString += " WHERE scheduleDate > ? ";
+            queryString += " AND city = ? ";
+            queryString += " ORDER BY city, creationDate";
 
-            /* Execute query. */
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
 
-            /* Read movies. */
-            List<Race> races = new ArrayList<Race>();
+                int i = 1;
+                Timestamp timestamp = Timestamp.valueOf(creationDate);
+                preparedStatement.setTimestamp(i++, timestamp);
+                preparedStatement.setString(i++, inputCity);
 
-            while (resultSet.next()) {
+                /* Execute query. */
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-                i = 1;
-                Long raceId = resultSet.getLong(i++);
-                String city = resultSet.getString(i++);
-                String raceDescription = resultSet.getString(i++);
-                double inscriptionPrice = resultSet.getDouble(i++);
-                int maxParticipants = resultSet.getInt(i++);
-                Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
-                LocalDateTime creationDateTime = creationDateAsTimestamp != null
-                        ? creationDateAsTimestamp.toLocalDateTime()
-                        : null;
-                Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
-                LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
-                        ? scheduleDateAsTimestamp.toLocalDateTime()
-                        : null;
-                int numberOfInscribed = resultSet.getInt(i++);
+                /* Read movies. */
+                List<Race> races = new ArrayList<Race>();
 
-                /* Return sale. */
-                races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
+                while (resultSet.next()) {
 
+                    i = 1;
+                    Long raceId = resultSet.getLong(i++);
+                    String city = resultSet.getString(i++);
+                    String raceDescription = resultSet.getString(i++);
+                    double inscriptionPrice = resultSet.getDouble(i++);
+                    int maxParticipants = resultSet.getInt(i++);
+                    Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
+                    LocalDateTime creationDateTime = creationDateAsTimestamp != null
+                            ? creationDateAsTimestamp.toLocalDateTime()
+                            : null;
+                    Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
+                    LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
+                            ? scheduleDateAsTimestamp.toLocalDateTime()
+                            : null;
+                    int numberOfInscribed = resultSet.getInt(i++);
+
+                    /* Return sale. */
+                    races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
+
+                }
+
+                /* Return movies. */
+                return races;
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+        } else {
+            /* Create "queryString". */
+            queryString += " WHERE scheduleDate > (?) ";
 
-            /* Return movies. */
-            return races;
+            queryString += " ORDER BY creationDate";
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
+
+                int i = 1;
+                Timestamp timestamp = Timestamp.valueOf(creationDate);
+                preparedStatement.setTimestamp(i++, timestamp);
+
+                /* Execute query. */
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                /* Read movies. */
+                List<Race> races = new ArrayList<Race>();
+
+                while (resultSet.next()) {
+
+                    i = 1;
+                    Long raceId = resultSet.getLong(i++);
+                    String city = resultSet.getString(i++);
+                    String raceDescription = resultSet.getString(i++);
+                    double inscriptionPrice = resultSet.getDouble(i++);
+                    int maxParticipants = resultSet.getInt(i++);
+                    Timestamp creationDateAsTimestamp = resultSet.getTimestamp(i++);
+                    LocalDateTime creationDateTime = creationDateAsTimestamp != null
+                            ? creationDateAsTimestamp.toLocalDateTime()
+                            : null;
+                    Timestamp scheduleDateAsTimestamp = resultSet.getTimestamp(i++);
+                    LocalDateTime scheduleDateTime = scheduleDateAsTimestamp != null
+                            ? scheduleDateAsTimestamp.toLocalDateTime()
+                            : null;
+                    int numberOfInscribed = resultSet.getInt(i++);
+
+                    /* Return sale. */
+                    races.add(new Race(raceId, city, raceDescription, inscriptionPrice, maxParticipants, numberOfInscribed, creationDateTime, scheduleDateTime));
+
+                }
+
+                /* Return movies. */
+                return races;
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-
     }
 }

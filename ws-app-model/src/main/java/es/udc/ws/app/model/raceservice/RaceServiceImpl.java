@@ -96,16 +96,6 @@ public class RaceServiceImpl implements RaceService{
     }
 
     @Override
-    public List<Race> findRacesByDate(LocalDateTime scheduleDate) {
-
-        try (Connection connection = dataSource.getConnection()) {
-            return raceDao.findByDate(connection, scheduleDate);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public List<Race> findRacesByDateAndCity(LocalDateTime scheduleDate, String city) {
 
         try (Connection connection = dataSource.getConnection()) {

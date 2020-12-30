@@ -3,9 +3,7 @@ package es.udc.ws.app.client.service.rest.json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import es.udc.ws.app.client.service.exceptions.ClientAlreadyInscribedException;
-import es.udc.ws.app.client.service.exceptions.ClientInscriptionDateOverException;
-import es.udc.ws.app.client.service.exceptions.ClientMaxParticipantsException;
+import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.json.ObjectMapperFactory;
@@ -37,6 +35,12 @@ public class JsonToClientExceptionConversor {
 
                     case "MaxParticipants":
                         return toMaxParticipantsException(rootNode);
+
+                    case "DorsalAlreadyCollected":
+                        return toDorsalAlreadyCollectedException(rootNode);
+
+                    case "CreditCardDoesNotMatch":
+                        return toCreditCardDoesNotMatchException(rootNode);
 
                     default:
                         throw new ParsingException("Unrecognized error type: " + errorType);
@@ -78,6 +82,18 @@ public class JsonToClientExceptionConversor {
         int maxParticipants = rootNode.get("maxParticipants").intValue();
 
         return new ClientMaxParticipantsException(saleId, maxParticipants);
+    }
+
+    private static ClientDorsalAlreadyCollectedException toDorsalAlreadyCollectedException(JsonNode rootNode){
+        Long inscriptionId = rootNode.get("inscriptionId").longValue();
+
+        return new ClientDorsalAlreadyCollectedException(inscriptionId);
+    }
+
+    private static ClientCreditCardDoesNotMatchException toCreditCardDoesNotMatchException(JsonNode rootNode){
+        String creditCard1 = rootNode.get("creditCard1").toString();
+        String creditCard2 = rootNode.get("creditCard2").toString();
+        return new ClientCreditCardDoesNotMatchException(creditCard1, creditCard2);
     }
 
     public static Exception fromNotFoundErrorCode(InputStream ex) throws ParsingException {

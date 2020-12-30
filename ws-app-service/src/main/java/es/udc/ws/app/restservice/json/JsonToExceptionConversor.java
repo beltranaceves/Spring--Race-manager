@@ -81,7 +81,7 @@ public class JsonToExceptionConversor {
 
         ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
 
-        exceptionObject.put("errorType", "AlreadyCollectedException");
+        exceptionObject.put("errorType", "DorsalAlreadyCollected");
         exceptionObject.put("inscriptionId", (ex.getInscriptionID() != null) ? ex.getInscriptionID() : null);
 
         return exceptionObject;
@@ -91,7 +91,7 @@ public class JsonToExceptionConversor {
 
         ObjectNode exceptionObject = JsonNodeFactory.instance.objectNode();
 
-        exceptionObject.put("errorType", "CreditCardDoesNotMatchException");
+        exceptionObject.put("errorType", "CreditCardDoesNotMatch");
         exceptionObject.put("creditCard1", (ex.getCreditCard1() != null) ? ex.getCreditCard1() : null);
         exceptionObject.put("creditCard2", (ex.getCreditCard2() != null) ? ex.getCreditCard2() : null);
 

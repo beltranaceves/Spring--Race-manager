@@ -267,7 +267,7 @@ public class RaceServiceImpl implements RaceService{
 
             Inscription inscription = inscriptionDao.find(connection, inscriptionId);
             LocalDateTime now = LocalDateTime.now();
-            Race race = findRace(inscription.getRaceId());
+            Race race = raceDao.find(connection, inscription.getRaceId());
 
             validateInscription(inscription);
 
@@ -277,16 +277,12 @@ public class RaceServiceImpl implements RaceService{
             if (inscription.getCollected()) {
                 throw new dorsalAlreadyCollectedException();
             } else {
-                if (race.getScheduleDate().isAfter(now)) {
-                    inscription.setCollected(true);
-                    updateInscription(inscription);
-                    return inscription.getDorsalNumber();
-                } else {
-                    throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
-                }
+                inscription.setCollected(true);
+                inscriptionDao.update(connection, inscription);
+                return inscription.getDorsalNumber();
             }
 
-        } catch (SQLException | InputValidationException | InscriptionExpirationException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 

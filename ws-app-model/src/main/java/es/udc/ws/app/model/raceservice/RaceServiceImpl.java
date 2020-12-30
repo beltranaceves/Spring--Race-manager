@@ -271,19 +271,18 @@ public class RaceServiceImpl implements RaceService{
 
             validateInscription(inscription);
 
-            if (inscription.getCreditCardNumber() == creditCardNumber) {
+            if (!inscription.getCreditCardNumber().contentEquals(creditCardNumber)) {
                 throw new creditCardDoesNotMatchException(creditCardNumber, inscription.getCreditCardNumber());
+            }
+            if (inscription.getCollected()) {
+                throw new dorsalAlreadyCollectedException();
             } else {
-                if (inscription.getCollected()) {
-                    throw new dorsalAlreadyCollectedException();
+                if (race.getScheduleDate().isAfter(now)) {
+                    inscription.setCollected(true);
+                    updateInscription(inscription);
+                    return inscription.getDorsalNumber();
                 } else {
-                    if (race.getScheduleDate().isAfter(now)) {
-                        inscription.setCollected(true);
-                        updateInscription(inscription);
-                        return inscription.getDorsalNumber();
-                    } else {
-                        throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
-                    }
+                    throw new InscriptionExpirationException(inscription.getDorsalNumber(), race.getScheduleDate());
                 }
             }
 

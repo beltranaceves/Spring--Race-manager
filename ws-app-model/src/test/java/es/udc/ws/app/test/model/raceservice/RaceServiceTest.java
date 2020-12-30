@@ -415,6 +415,40 @@ public class RaceServiceTest {
         }
     }
 
+    //Alumno 3 (caso 6)
+    @Test
+    public void testCollectDorsalCreditCardDoesNotMatch() {
+
+        assertThrows(creditCardDoesNotMatchException.class, () -> {
+            Race race = getValidRace("A Coruña", (long) 2);
+            Race addedRace = null;
+            Race foundRace;
+            Long addedInscription;
+
+            try {
+
+                // Add Race
+                addedRace = createRace(race);
+
+                // Find Race
+                foundRace = raceService.findRace(addedRace.getRaceId());
+
+                // Add Inscription
+                addedInscription = raceService.inscribeRace(foundRace.getRaceId(), "user@domain.com", VALID_CREDIT_CARD_NUMBER);
+
+                foundRace = raceService.findRace(addedRace.getRaceId());
+                int dorsalNumber = raceService.collectInscription(addedInscription, "1234567890123457");
+
+            } finally {
+                // Clear Database
+                if (addedRace!=null) {
+                    removeRace(addedRace.getRaceId());
+                }
+            }
+        });
+
+    }
+
 
     //Alumno 3 (caso 6)
     @Test

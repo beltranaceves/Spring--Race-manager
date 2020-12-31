@@ -113,15 +113,15 @@ public class InscriptionsServlet extends HttpServlet {
                     JsonToExceptionConversor.toInputValidationException(ex), null);
             return;
         } catch (AlreadyInscribedException ex) {
-            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_FORBIDDEN,
                     JsonToExceptionConversor.toAlreadyInscribedException(ex), null);
             return;
         } catch (InscriptionDateOverException ex) {
-            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_GONE,
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_FORBIDDEN,
                     JsonToExceptionConversor.toInscriptionDateOverException(ex), null);
             return;
         } catch (MaxParticipantsException ex) {
-            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_GONE,
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_FORBIDDEN,
                     JsonToExceptionConversor.toMaxParticipantsException(ex), null);
             return;
         }

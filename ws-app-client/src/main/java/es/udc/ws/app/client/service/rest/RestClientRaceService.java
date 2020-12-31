@@ -104,6 +104,10 @@ public class RestClientRaceService implements ClientRaceService {
                     throw JsonToClientExceptionConversor.fromBadRequestErrorCode(
                             response.getEntity().getContent());
 
+                case HttpStatus.SC_FORBIDDEN:
+                    throw JsonToClientExceptionConversor.fromForbiddenErrorCode(
+                            response.getEntity().getContent());
+
                 default:
                     throw new RuntimeException("HTTP error; status code = "
                             + statusCode);

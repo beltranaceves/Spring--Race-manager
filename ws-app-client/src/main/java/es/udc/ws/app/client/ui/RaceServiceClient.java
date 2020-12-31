@@ -3,9 +3,7 @@ package es.udc.ws.app.client.ui;
 import es.udc.ws.app.client.service.ClientRaceService;
 import es.udc.ws.app.client.service.ClientRaceServiceFactory;
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
-import es.udc.ws.app.client.service.exceptions.ClientAlreadyInscribedException;
-import es.udc.ws.app.client.service.exceptions.ClientInscriptionDateOverException;
-import es.udc.ws.app.client.service.exceptions.ClientMaxParticipantsException;
+import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import java.util.List;
@@ -64,6 +62,25 @@ public class RaceServiceClient {
                 ex.printStackTrace(System.err);
             }
 
+        } else if ("-c".equalsIgnoreCase(args[0])) {
+
+            validateArgs(args, 3, new int[] {});
+
+            // [collectDorsal]      RaceServiceClient -c <inscriptionId> <creditCardNumber>
+
+            try{
+                int dorsalNumber = clientRaceService.collectInscription(Long.parseLong(args[1]), args[2]);
+
+                System.out.println("Dorsal number: " + dorsalNumber + " collected successfully by racer with " +
+                        " credit card number: " + args[2]);
+
+            } catch (InputValidationException | ClientDorsalAlreadyCollectedException |
+                    ClientCreditCardDoesNotMatchException | InstanceNotFoundException ex) {
+                ex.printStackTrace(System.err);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
+
         }
 
     }
@@ -90,8 +107,9 @@ public class RaceServiceClient {
 
     public static void printUsage() {
         System.err.println("Usage:\n" +
-                "    [register] RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
-                "    [find]     RaceServiceClient -f <userEmail>\n");
+                "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
+                "    [find]          RaceServiceClient -f <userEmail>\n" +
+                "    [collectDorsal] RaceServiceClient -c <inscriptionId> <creditCardNumber>");
     }
 
 }

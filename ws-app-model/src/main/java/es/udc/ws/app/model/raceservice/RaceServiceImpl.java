@@ -261,8 +261,6 @@ public class RaceServiceImpl implements RaceService{
     public int collectInscription(Long inscriptionId, String creditCardNumber) throws InstanceNotFoundException,
             DorsalAlreadyCollectedException, InputValidationException, CreditCardDoesNotMatchException {
 
-        //validateInscription(inscription);
-
         try (Connection connection = dataSource.getConnection()) {
 
             Inscription inscription = inscriptionDao.find(connection, inscriptionId);

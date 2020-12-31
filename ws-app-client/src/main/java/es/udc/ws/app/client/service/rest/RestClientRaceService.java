@@ -2,9 +2,7 @@ package es.udc.ws.app.client.service.rest;
 
 import es.udc.ws.app.client.service.ClientRaceService;
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
-import es.udc.ws.app.client.service.exceptions.ClientAlreadyInscribedException;
-import es.udc.ws.app.client.service.exceptions.ClientInscriptionDateOverException;
-import es.udc.ws.app.client.service.exceptions.ClientMaxParticipantsException;
+import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.app.client.service.rest.json.JsonToClientExceptionConversor;
 import es.udc.ws.app.client.service.rest.json.JsonToClientInscriptionDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
@@ -67,6 +65,32 @@ public class RestClientRaceService implements ClientRaceService {
 
         } catch (InputValidationException | InstanceNotFoundException | ClientAlreadyInscribedException |
                     ClientInscriptionDateOverException | ClientMaxParticipantsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public int collectInscription(Long inscriptionId, String creditCardNumber) throws InputValidationException,
+            InstanceNotFoundException, ClientDorsalAlreadyCollectedException, ClientCreditCardDoesNotMatchException {
+
+        try {
+
+            HttpResponse response = Request.Post(getEndpointAddress() + "").
+                    bodyForm(
+                            Form.form().
+                                    add("inscriptionId", Long.toString(inscriptionId)).
+                                    add("creditCardNumber", creditCardNumber).
+                                    build()).
+                    execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_CREATED, response);
+
+            return JsonToClientInscriptionDtoConversor.toClientInscriptionDto(response.getEntity().getContent()).getDorsalNumber();
+
+        } catch (InputValidationException | InstanceNotFoundException | ClientDorsalAlreadyCollectedException |
+                    ClientCreditCardDoesNotMatchException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);

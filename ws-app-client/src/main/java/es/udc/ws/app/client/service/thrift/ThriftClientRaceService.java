@@ -33,8 +33,23 @@ public class ThriftClientRaceService implements ClientRaceService {
 
     @Override
     public List<ClientInscriptionDto> findInscriptionByUserEmail(String userEmail) throws InputValidationException {
+        
+        ThriftRaceService.Client client = getClient();
+        TTransport transport = client.getInputProtocol().getTransport();
 
-        return null;
+        try  {
+
+            transport.open();
+
+            return ClientInscriptionDtoToThriftInscriptionDtoConversor.toClientInscriptionDto(client.findInscriptionByUserEmail(userEmail));
+
+        } catch (ThriftInputValidationException e) {
+            throw new InputValidationException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            transport.close();
+        }
 
     }
 

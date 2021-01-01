@@ -25,18 +25,15 @@
     </servlet-mapping>
 
    <!-- Thrift service -->
-   <!-- Fill XXX and uncomment the following lines --> 
-   <!--
     <servlet>
-        <servlet-name>ThriftXXXServiceServlet</servlet-name>
-        <servlet-class>es.udc.ws.app.thriftservice.ThriftXXXServiceServlet</servlet-class>
+        <servlet-name>ThriftRaceServiceServlet</servlet-name>
+        <servlet-class>es.udc.ws.app.thriftservice.ThriftRaceServiceServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ThriftXXXServiceServlet</servlet-name>
-        <url-pattern>/thrift/XXXservice</url-pattern>
+        <servlet-name>ThriftRaceServiceServlet</servlet-name>
+        <url-pattern>/thrift/raceservice</url-pattern>
     </servlet-mapping>
-    -->
 
     <!-- General configuration -->
 

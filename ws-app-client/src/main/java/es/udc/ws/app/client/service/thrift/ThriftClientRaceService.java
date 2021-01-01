@@ -43,7 +43,31 @@ public class ThriftClientRaceService implements ClientRaceService {
             InputValidationException, ClientAlreadyInscribedException, ClientInscriptionDateOverException,
             ClientMaxParticipantsException {
 
-        return (long) 0;
+        ThriftRaceService.Client client = getClient();
+        TTransport transport = client.getInputProtocol().getTransport();
+
+        try  {
+
+            transport.open();
+
+            return client.inscribeRace(raceId, userEmail, creditCardNumber);
+
+        } catch (ThriftInputValidationException e) {
+            throw new InputValidationException(e.getMessage());
+        } catch (ThriftInstanceNotFoundException e) {
+            throw new InstanceNotFoundException(e.getInstanceId(), e.getInstanceType());
+        } catch (ThriftAlreadyInscribedException e) {
+            throw new ClientAlreadyInscribedException(e.getRaceId(), e.getUserEmail());
+        } catch (ThriftInscriptionDateOverException e) {
+            throw new ClientInscriptionDateOverException(e.getRaceId(), LocalDateTime.parse(e.getDateOver(),
+                    DateTimeFormatter.ISO_DATE_TIME));
+        } catch (ThriftMaxParticipantsException e) {
+            throw new ClientMaxParticipantsException(e.getRaceId(), e.getMaxParticipants());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            transport.close();
+        }
 
     }
 

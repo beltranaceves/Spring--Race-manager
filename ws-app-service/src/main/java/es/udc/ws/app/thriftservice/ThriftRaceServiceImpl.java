@@ -32,7 +32,23 @@ public class ThriftRaceServiceImpl implements ThriftRaceService.Iface {
             ThriftInstanceNotFoundException, ThriftAlreadyInscribedException, ThriftInscriptionDateOverException,
             ThriftMaxParticipantsException {
 
-        return 0;
+        try {
+
+            long inscriptionId = RaceServiceFactory.getService().inscribeRace(raceId, userEmail, creditCardNumber);
+            return inscriptionId;
+
+        } catch (AlreadyInscribedException e) {
+            throw new ThriftAlreadyInscribedException(e.getRaceId(), e.getUserEmail());
+        } catch (InscriptionDateOverException e) {
+            throw new ThriftInscriptionDateOverException(e.getRaceId(), e.getDateOver().toString());
+        } catch (MaxParticipantsException e) {
+            throw new ThriftMaxParticipantsException(e.getRaceId(), e.getMaxParticipants());
+        } catch (InstanceNotFoundException e) {
+            throw new ThriftInstanceNotFoundException(e.getInstanceId().toString(),
+                    e.getInstanceType().substring(e.getInstanceType().lastIndexOf('.') + 1));
+        } catch (InputValidationException e) {
+            throw new ThriftInputValidationException(e.getMessage());
+        }
 
     }
 

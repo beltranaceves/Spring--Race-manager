@@ -33,7 +33,7 @@ exception ThriftMaxParticipantsException {
 
 service ThriftRaceService {
 
-   list<ThriftInscriptionDto> findInscriptionByUserEmail(1: string userEmail)
+   list<ThriftInscriptionDto> findInscriptionByUserEmail(1: string userEmail) throws (1: ThriftInputValidationException e)
 
    i64 inscribeRace(1: i64 raceId, 2: string userEmail, 3: string creditCardNumber) throws (1: ThriftInputValidationException e,
    2: ThriftInstanceNotFoundException ee, 3: ThriftAlreadyInscribedException eee, 4: ThriftInscriptionDateOverException eeee,

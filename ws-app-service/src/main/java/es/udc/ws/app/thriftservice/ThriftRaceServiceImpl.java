@@ -14,9 +14,16 @@ import java.util.List;
 public class ThriftRaceServiceImpl implements ThriftRaceService.Iface {
 
     @Override
-    public List<ThriftInscriptionDto> findInscriptionByUserEmail(String userEmail) {
+    public List<ThriftInscriptionDto> findInscriptionByUserEmail(String userEmail) throws ThriftInputValidationException {
 
-        return null;
+        List<Inscription> inscriptions = null;
+        try {
+            inscriptions = RaceServiceFactory.getService().findInscriptionByUserEmail(userEmail);
+        } catch (InputValidationException e) {
+            throw new ThriftInputValidationException(e.getMessage());
+        }
+
+        return InscriptionToThriftInscriptionDtoConversor.toThriftInscriptionDtos(inscriptions);
 
     }
 

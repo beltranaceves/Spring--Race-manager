@@ -3,9 +3,12 @@ package es.udc.ws.app.client.ui;
 import es.udc.ws.app.client.service.ClientRaceService;
 import es.udc.ws.app.client.service.ClientRaceServiceFactory;
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
+import es.udc.ws.app.client.service.dto.ClientRaceDto;
 import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RaceServiceClient {
@@ -98,6 +101,26 @@ public class RaceServiceClient {
                 ex.printStackTrace(System.err);
             }
 
+        } else if ("-ar".equalsIgnoreCase(args[0])){
+
+            validateArgs(args, 5, new int[] {3, 4});
+
+            // [addRace] RaceServiceClient -ar <city> <description> <date> <inscriptionPrice> <maxParticipants>
+            
+            try {
+                Long raceId = clientRaceService.addRace(new ClientRaceDto(args[1],
+                		args[2], LocalDateTime.parse(args[3]),
+                		Double.parseDouble(args[4]), Integer.parseInt(args[5]))
+                		);
+
+                System.out.println("Carrera " + raceId + " añadida correctamente");
+
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace(System.err);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }            
+
         }
 
     }
@@ -126,7 +149,8 @@ public class RaceServiceClient {
         System.err.println("Usage:\n" +
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
-                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>");
+                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>" + 
+                "    [addRace]       RaceServiceClient -ar <city, description, date, inscriptionPrice, maxParticipants>");
     }
 
 }

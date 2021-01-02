@@ -2,6 +2,7 @@ package es.udc.ws.app.client.service.rest;
 
 import es.udc.ws.app.client.service.ClientRaceService;
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
+import es.udc.ws.app.client.service.dto.ClientRaceDto;
 import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.app.client.service.rest.json.JsonToClientExceptionConversor;
 import es.udc.ws.app.client.service.rest.json.JsonToClientInscriptionDtoConversor;
@@ -9,13 +10,23 @@ import es.udc.ws.app.client.service.rest.json.JsonToClientRaceDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.json.ObjectMapperFactory;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RestClientRaceService implements ClientRaceService {
@@ -160,6 +171,40 @@ public class RestClientRaceService implements ClientRaceService {
                     throw new RuntimeException("HTTP error; status code = "
                             + statusCode);
             }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public Long addRace(ClientRaceDto race) throws InputValidationException {
+        try {
+
+            HttpResponse response = Request.Post(getEndpointAddress() + "races").
+                    bodyStream(toInputStream(race), ContentType.create("application/json")).
+                    execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_CREATED, response);
+
+            return JsonToClientRaceDtoConversor.toClientRaceDto(response.getEntity().getContent()).getRaceId();
+
+        } catch (InputValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    private InputStream toInputStream(ClientRaceDto race) {
+
+        try {
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectMapper objectMapper = ObjectMapperFactory.instance();
+            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream,
+                    JsonToClientRaceDtoConversor.toObjectNode(race));
+
+            return new ByteArrayInputStream(outputStream.toByteArray());
 
         } catch (IOException e) {
             throw new RuntimeException(e);

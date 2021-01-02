@@ -1,9 +1,12 @@
 package es.udc.ws.app.client.service;
 
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
+import es.udc.ws.app.client.service.dto.ClientRaceDto;
 import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ClientRaceService {
@@ -19,4 +22,6 @@ public interface ClientRaceService {
             ClientCreditCardDoesNotMatchException;
 
     public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException;
+    
+    public Long addRace(ClientRaceDto race) throws InputValidationException;
 }

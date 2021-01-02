@@ -166,10 +166,20 @@ public class InscriptionsServlet extends HttpServlet {
 
         RestInscriptionDto inscriptionDto;
         try {
-            //inscriptionDto = JsonToRestInscriptionDtoConversor
+            inscriptionDto = JsonToRestInscriptionDtoConversor.toServiceInscriptionDto(req.getInputStream());
         } catch (ParsingException ex) {
-
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+                    JsonToExceptionConversor.toInputValidationException(
+                            new InputValidationException(ex.getMessage())), null);
+            return;
         }
+        if (!inscriptionId.equals(inscriptionDto.getInscriptionId())) {
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+                    JsonToExceptionConversor.toInputValidationException(
+                            new InputValidationException("Invalid request: " + "invalid inscriptionId")), null);
+            return;
+        }
+        Inscription inscription = InscriptionToRestInscriptionDtoConversor.toInscription(inscriptionDto);
     }
 }
 

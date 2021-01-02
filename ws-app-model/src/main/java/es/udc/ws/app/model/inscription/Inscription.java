@@ -20,7 +20,7 @@ public class Inscription{
 		this.collected = collected;
 	}
 
-	public Inscription(Long inscriptionId,String userEmail, Long raceId, String creditCardNumber, int dorsalNumber, Boolean collected) {
+	public Inscription(Long inscriptionId, String userEmail, Long raceId, String creditCardNumber, int dorsalNumber, Boolean collected) {
 		this(userEmail, raceId, creditCardNumber, dorsalNumber, collected);
 		this.inscriptionId = inscriptionId;
 	}
@@ -37,7 +37,14 @@ public class Inscription{
 		this(inscriptionId, userEmail, raceId, creditCardNumber, dorsalNumber, collected);
 		this.inscriptionDate = (inscriptionDate != null) ? inscriptionDate.withNano(0) : null;
 	}
-	
+
+	public Inscription(Long inscriptionId, Long raceId, int dorsalNumber, Boolean collected) {
+		this.inscriptionId = inscriptionId;
+		this.raceId = raceId;
+		this.dorsalNumber = dorsalNumber;
+		this.collected = collected;
+	}
+
 	public Long getInscriptionId() {
 		return inscriptionId;
 	}

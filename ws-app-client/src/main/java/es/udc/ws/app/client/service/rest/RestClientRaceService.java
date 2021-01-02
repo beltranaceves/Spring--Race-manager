@@ -78,7 +78,7 @@ public class RestClientRaceService implements ClientRaceService {
 
         try {
 
-            HttpResponse response = Request.Post(getEndpointAddress() + "").
+            HttpResponse response = Request.Post(getEndpointAddress() + "inscriptions").
                     bodyForm(
                             Form.form().
                                     add("inscriptionId", Long.toString(inscriptionId)).
@@ -109,7 +109,11 @@ public class RestClientRaceService implements ClientRaceService {
 
             validateStatusCode(HttpStatus.SC_OK, response);
 
-            return JsonToClientRaceDtoConversor.toClientRaceDto(response.getEntity().getContent()).getNumberOfInscribed();
+            int placesLeft;
+            placesLeft = JsonToClientRaceDtoConversor.toClientRaceDto(response.getEntity().getContent()).getMaxParticipants()
+                    - JsonToClientRaceDtoConversor.toClientRaceDto(response.getEntity().getContent()).getNumberOfInscribed();
+
+            return placesLeft;
 
         } catch (InputValidationException | InstanceNotFoundException e) {
             throw e;

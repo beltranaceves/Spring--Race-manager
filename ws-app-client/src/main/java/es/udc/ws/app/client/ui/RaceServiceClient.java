@@ -90,7 +90,7 @@ public class RaceServiceClient {
             try {
                 int numberOfInscribed = clientRaceService.findRace(Long.parseLong(args[1]));
 
-                System.out.println("Corredores inscritos: " + numberOfInscribed);
+                System.out.println("Plazas libres = " + numberOfInscribed);
 
             } catch (InputValidationException | InstanceNotFoundException ex) {
                 ex.printStackTrace(System.err);

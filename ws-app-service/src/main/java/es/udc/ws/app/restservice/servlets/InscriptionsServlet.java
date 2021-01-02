@@ -11,6 +11,7 @@ import es.udc.ws.app.restservice.json.JsonToExceptionConversor;
 import es.udc.ws.app.restservice.json.JsonToRestInscriptionDtoConversor;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.ws.util.json.exceptions.ParsingException;
 import es.udc.ws.util.servlet.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -140,6 +141,35 @@ public class InscriptionsServlet extends HttpServlet {
 
         ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_CREATED,
                 JsonToRestInscriptionDtoConversor.toObjectNode(inscriptionDto), null);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = ServletUtils.normalizePath(req.getPathInfo());
+        if (path == null | path.length() == 0) {
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+                    JsonToExceptionConversor.toInputValidationException(
+                            new InputValidationException("Invalid request: " + "invalid inscriptionId")), null);
+            return;
+        }
+        String inscriptionIdAsString = path.substring(1);
+        Long inscriptionId;
+        try {
+            inscriptionId = Long.valueOf(inscriptionIdAsString);
+        } catch (NumberFormatException ex) {
+            ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
+                    JsonToExceptionConversor.toInputValidationException(
+                            new InputValidationException("Invalid request: " + "invalid raceId '" + inscriptionIdAsString)),
+                    null);
+            return;
+        }
+
+        RestInscriptionDto inscriptionDto;
+        try {
+            //inscriptionDto = JsonToRestInscriptionDtoConversor
+        } catch (ParsingException ex) {
+
+        }
     }
 }
 

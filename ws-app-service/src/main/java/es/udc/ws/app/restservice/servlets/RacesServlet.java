@@ -2,7 +2,9 @@ package es.udc.ws.app.restservice.servlets;
 
 import es.udc.ws.app.model.race.Race;
 import es.udc.ws.app.model.raceservice.RaceServiceFactory;
+import es.udc.ws.app.restservice.dto.RaceToRestRaceDtoConversor;
 import es.udc.ws.app.restservice.json.JsonToExceptionConversor;
+import es.udc.ws.app.restservice.json.JsonToRestRaceDtoConversor;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 import es.udc.ws.util.servlet.ServletUtils;
@@ -47,6 +49,9 @@ public class RacesServlet extends HttpServlet {
             return;
         }
 
-        //RestRaceDto raceDto = ;
+        RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
+
+        ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_CREATED,
+                JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
     }
 }

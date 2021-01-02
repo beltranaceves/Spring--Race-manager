@@ -62,11 +62,11 @@ public class RaceServiceClient {
                 ex.printStackTrace(System.err);
             }
 
-        } else if ("-c".equalsIgnoreCase(args[0])) {
+        } else if ("-d".equalsIgnoreCase(args[0])) {
 
             validateArgs(args, 3, new int[] {});
 
-            // [collectDorsal]      RaceServiceClient -c <inscriptionId> <creditCardNumber>
+            // [deliverNumber]      RaceServiceClient -d <inscriptionId> <creditCardNumber>
 
             try{
                 int dorsalNumber = clientRaceService.collectInscription(Long.parseLong(args[1]), args[2]);
@@ -109,7 +109,7 @@ public class RaceServiceClient {
         System.err.println("Usage:\n" +
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
-                "    [collectDorsal] RaceServiceClient -c <inscriptionId> <creditCardNumber>");
+                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>");
     }
 
 }

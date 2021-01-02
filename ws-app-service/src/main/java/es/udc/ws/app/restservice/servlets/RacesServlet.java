@@ -17,6 +17,6 @@ public class RacesServlet extends HttpServlet {
         if (path == null || path.length() == 0) {
             Long raceId = Long.valueOf(req.getParameter("raceId"));
         }
-        
+
     }
 }

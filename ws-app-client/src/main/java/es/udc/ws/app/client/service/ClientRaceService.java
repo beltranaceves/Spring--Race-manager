@@ -17,4 +17,6 @@ public interface ClientRaceService {
     public int collectInscription(Long inscriptionId, String creditCardNumber)
             throws InputValidationException, InstanceNotFoundException, ClientDorsalAlreadyCollectedException,
             ClientCreditCardDoesNotMatchException;
+
+    public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException;
 }

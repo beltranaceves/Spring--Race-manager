@@ -64,7 +64,7 @@ public class RaceServiceClient {
 
         } else if ("-d".equalsIgnoreCase(args[0])) {
 
-            validateArgs(args, 3, new int[] {});
+            validateArgs(args, 3, new int[] {1});
 
             // [deliverNumber]      RaceServiceClient -d <inscriptionId> <creditCardNumber>
 
@@ -76,6 +76,23 @@ public class RaceServiceClient {
 
             } catch (InputValidationException | ClientDorsalAlreadyCollectedException |
                     ClientCreditCardDoesNotMatchException | InstanceNotFoundException ex) {
+                ex.printStackTrace(System.err);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.err);
+            }
+
+        } else if ("-fr".equalsIgnoreCase(args[0])){
+
+            validateArgs(args, 2, new int[] {});
+
+            // [findRace] RaceServiceClient -fr <raceId>
+
+            try {
+                int numberOfInscribed = clientRaceService.findRace(Long.parseLong(args[1]));
+
+                System.out.println("Corredores inscritos: " + numberOfInscribed);
+
+            } catch (InputValidationException | InstanceNotFoundException ex) {
                 ex.printStackTrace(System.err);
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);

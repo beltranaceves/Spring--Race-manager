@@ -92,6 +92,11 @@ public class ThriftClientRaceService implements ClientRaceService {
         return 0;
     }
 
+    @Override
+    public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException {
+        return 0;
+    }
+
     private ThriftRaceService.Client getClient() {
 
         try {

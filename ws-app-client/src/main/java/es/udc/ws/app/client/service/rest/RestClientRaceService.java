@@ -98,6 +98,11 @@ public class RestClientRaceService implements ClientRaceService {
 
     }
 
+    @Override
+    public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException {
+        return 0;
+    }
+
     private synchronized String getEndpointAddress() {
         if (endpointAddress == null) {
             endpointAddress = ConfigurationParametersManager

@@ -100,6 +100,20 @@ public class RestClientRaceService implements ClientRaceService {
 
     @Override
     public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException {
+
+        try {
+            HttpResponse response = Request.Get(getEndpointAddress() + "races/" +raceId).execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_OK, response);
+
+            //return JsontoClientRaceDtoConversor
+
+        } catch (InputValidationException | InstanceNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         return 0;
     }
 

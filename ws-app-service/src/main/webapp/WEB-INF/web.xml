@@ -24,7 +24,21 @@
         <url-pattern>/inscriptions/*</url-pattern>
     </servlet-mapping>
 
-   <!-- Thrift service -->
+    <!-- Races servlet -->
+    <servlet>
+        <display-name>RacesServlet</display-name>
+        <servlet-name>RacesServlet</servlet-name>
+        <servlet-class>
+            es.udc.ws.app.restservice.servlets.RacesServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RacesServlet</servlet-name>
+        <url-pattern>/races/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Thrift service -->
     <servlet>
         <servlet-name>ThriftRaceServiceServlet</servlet-name>
         <servlet-class>es.udc.ws.app.thriftservice.ThriftRaceServiceServlet</servlet-class>

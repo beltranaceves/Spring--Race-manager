@@ -111,6 +111,11 @@ public class ThriftClientRaceService implements ClientRaceService {
         }
 
     }
+    
+    @Override
+    public Long addRace(ClientRaceDto race) throws InputValidationException {
+    	return null;
+    }
 
 }
 

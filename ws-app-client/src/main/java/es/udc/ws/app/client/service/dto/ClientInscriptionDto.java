@@ -17,7 +17,6 @@ public class ClientInscriptionDto {
         public Long getInscriptionId() {
             return inscriptionId;
         }
-
         public void setInscriptionId(Long inscriptionId) {
             this.inscriptionId = inscriptionId;
         }
@@ -25,15 +24,11 @@ public class ClientInscriptionDto {
         public Long getRaceId() {
             return raceId;
         }
-
         public void setRaceId(Long raceId) {
             this.raceId = raceId;
         }
 
-        public int getDorsalNumber() {
-            return dorsalNumber;
-        }
-
+        public int getDorsalNumber() { return dorsalNumber; }
         public void setDorsalNumber(int dorsalNumber) {
             this.dorsalNumber = dorsalNumber;
         }
@@ -41,7 +36,6 @@ public class ClientInscriptionDto {
         public Boolean getCollected() {
             return collected;
         }
-
         public void setCollected(Boolean collected) {
             this.collected = collected;
         }

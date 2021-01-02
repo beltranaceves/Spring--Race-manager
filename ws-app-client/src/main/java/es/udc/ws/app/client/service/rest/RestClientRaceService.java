@@ -5,6 +5,7 @@ import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
 import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.app.client.service.rest.json.JsonToClientExceptionConversor;
 import es.udc.ws.app.client.service.rest.json.JsonToClientInscriptionDtoConversor;
+import es.udc.ws.app.client.service.rest.json.JsonToClientRaceDtoConversor;
 import es.udc.ws.util.configuration.ConfigurationParametersManager;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -102,19 +103,19 @@ public class RestClientRaceService implements ClientRaceService {
     public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException {
 
         try {
-            HttpResponse response = Request.Get(getEndpointAddress() + "races/" +raceId).execute().returnResponse();
+            HttpResponse response = Request.Get(getEndpointAddress() + "races?raceId="
+                    + URLEncoder.encode(String.valueOf(raceId), "UTF-8")).
+                    execute().returnResponse();
 
             validateStatusCode(HttpStatus.SC_OK, response);
 
-            //return JsontoClientRaceDtoConversor
+            return JsonToClientRaceDtoConversor.toClientRaceDto(response.getEntity().getContent()).getNumberOfInscribed();
 
         } catch (InputValidationException | InstanceNotFoundException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return 0;
     }
 
     private synchronized String getEndpointAddress() {

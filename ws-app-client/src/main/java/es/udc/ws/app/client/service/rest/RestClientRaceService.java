@@ -103,7 +103,7 @@ public class RestClientRaceService implements ClientRaceService {
     public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException {
 
         try {
-            HttpResponse response = Request.Get(getEndpointAddress() + "races?raceId="
+            HttpResponse response = Request.Get(getEndpointAddress() + "races?raceid="
                     + URLEncoder.encode(String.valueOf(raceId), "UTF-8")).
                     execute().returnResponse();
 

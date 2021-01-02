@@ -89,7 +89,7 @@ public class RestClientRaceService implements ClientRaceService {
 
         try {
 
-            HttpResponse response = Request.Post(getEndpointAddress() + "inscriptions").
+            HttpResponse response = Request.Put(getEndpointAddress() + "inscriptions").
                     bodyForm(
                             Form.form().
                                     add("inscriptionId", Long.toString(inscriptionId)).

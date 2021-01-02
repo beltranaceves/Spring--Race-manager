@@ -40,6 +40,7 @@ public class RacesServlet extends HttpServlet {
                     //FIND ONLY BY DATE (NULl CITY)
                 }
             } else {
+                //FIND BY RACEID
                 String raceIdAsString = path.substring(1);
                 Long raceId = Long.valueOf(req.getParameter("raceid"));
                 try {

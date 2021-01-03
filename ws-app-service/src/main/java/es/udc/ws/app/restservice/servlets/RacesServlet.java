@@ -31,7 +31,7 @@ public class RacesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = ServletUtils.normalizePath(req.getPathInfo());
         if (path == null || path.length() == 0) {
-            String date, city;
+            String raceId, date, city;
 
             if((date = req.getParameter("date")) != null) {
                 if ((city = req.getParameter("city")) != null) {
@@ -41,35 +41,29 @@ public class RacesServlet extends HttpServlet {
                 }
             } else {
                 //FIND BY RACEID
-                String raceIdAsString = path.substring(1);
-                Long raceId = Long.valueOf(req.getParameter("raceid"));
-                try {
-                    raceId = Long.valueOf(raceIdAsString);
-                } catch (NumberFormatException ex) {
+                if ((raceId = req.getParameter("raceId")) != null) {
+                    Race race;
+                    try{
+                        race = RaceServiceFactory.getService().findRace(Long.parseLong(raceId));
+                        RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
+                        ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+                                JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
+                    } catch (InstanceNotFoundException ex) {
+                        ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
+                                JsonToExceptionConversor.toInstanceNotFoundException(ex), null);
+                        return;
+                    }
+                } else {
                     ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
                             JsonToExceptionConversor.toInputValidationException(
-                                    new InputValidationException("Invalid request: " + "invalid raceId '" + raceIdAsString)),
-                            null);
+                                    new InputValidationException("Invalid request: " + "invalid path")), null);
                     return;
                 }
-
-                Race race;
-                try{
-                    race = RaceServiceFactory.getService().findRace(raceId);
-                    RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
-                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-                            JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
-                } catch (InstanceNotFoundException ex) {
-                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
-                            JsonToExceptionConversor.toInstanceNotFoundException(ex), null);
-                    return;
-                }
-
             }
         } else {
             ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
                     JsonToExceptionConversor.toInputValidationException(
-                            new InputValidationException("Invalid request: " + "invalid raceId")), null);
+                            new InputValidationException("Invalid request: " + "invalid path")), null);
             return;
         }
 

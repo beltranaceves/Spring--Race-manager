@@ -149,7 +149,8 @@ public class RaceServiceClient {
         System.err.println("Usage:\n" +
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
-                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>" + 
+                "    [findRace]      RaceServiceClient -fr <raceId>\n" +
+                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>\n" +
                 "    [addRace]       RaceServiceClient -ar <city, description, date, inscriptionPrice, maxParticipants>");
     }
 

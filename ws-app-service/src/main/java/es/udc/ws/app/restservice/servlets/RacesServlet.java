@@ -1,16 +1,9 @@
 package es.udc.ws.app.restservice.servlets;
 
-import es.udc.ws.app.model.inscription.Inscription;
 import es.udc.ws.app.model.race.Race;
 import es.udc.ws.app.model.raceservice.RaceServiceFactory;
-import es.udc.ws.app.model.raceservice.exceptions.AlreadyInscribedException;
-import es.udc.ws.app.model.raceservice.exceptions.InscriptionDateOverException;
-import es.udc.ws.app.model.raceservice.exceptions.MaxParticipantsException;
-import es.udc.ws.app.restservice.dto.InscriptionToRestInscriptionDtoConversor;
 import es.udc.ws.app.restservice.dto.RaceToRestRaceDtoConversor;
-import es.udc.ws.app.restservice.dto.RestInscriptionDto;
 import es.udc.ws.app.restservice.json.JsonToExceptionConversor;
-import es.udc.ws.app.restservice.json.JsonToRestInscriptionDtoConversor;
 import es.udc.ws.app.restservice.json.JsonToRestRaceDtoConversor;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -45,14 +38,14 @@ public class RacesServlet extends HttpServlet {
                     Race race;
                     try{
                         race = RaceServiceFactory.getService().findRace(Long.parseLong(raceId));
-                        RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
-                        ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-                                JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
                     } catch (InstanceNotFoundException ex) {
                         ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
                                 JsonToExceptionConversor.toInstanceNotFoundException(ex), null);
                         return;
                     }
+                    RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
+                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+                            JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
                 } else {
                     ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
                             JsonToExceptionConversor.toInputValidationException(
@@ -68,7 +61,8 @@ public class RacesServlet extends HttpServlet {
         }
 
     }
-    
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = ServletUtils.normalizePath(req.getPathInfo());

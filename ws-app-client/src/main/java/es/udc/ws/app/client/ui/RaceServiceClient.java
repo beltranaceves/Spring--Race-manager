@@ -151,7 +151,7 @@ public class RaceServiceClient {
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
                 "    [findRace]      RaceServiceClient -fr <raceId>\n" +
-                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>\n" +
+                "    [deliverNumber] RaceServiceClient -d <inscriptionId> <creditCardNumber>\n" +
                 "    [addRace]       RaceServiceClient -ar <city, description, date, inscriptionPrice, maxParticipants>");
     }
 

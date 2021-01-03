@@ -118,5 +118,9 @@ public class ThriftClientRaceService implements ClientRaceService {
     	return null;
     }
 
+    @Override
+    public List<ClientRaceDto> findRacesByDateAndCity(String date, String city) throws InputValidationException {
+        return null;
+    }
 }
 

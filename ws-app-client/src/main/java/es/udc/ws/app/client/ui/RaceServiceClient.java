@@ -120,8 +120,50 @@ public class RaceServiceClient {
                 ex.printStackTrace(System.err);
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
-            }            
+            }
+        } else if ("-frs".equalsIgnoreCase(args[0])){
+            if (args.length == 2) {
+                validateArgs(args, 2, new int[] {});
 
+                // [findRace] RaceServiceClient -fr <raceId>
+
+                try {
+                    List<ClientRaceDto> clientRaceDtos = clientRaceService.findRacesByDateAndCity(args[1], null);
+
+                    for(int i = 0; i < clientRaceDtos.size(); i++) {
+                        System.out.println(clientRaceDtos.get(i).getRaceId());
+                    }
+
+                } catch (InputValidationException ex) {
+                    ex.printStackTrace(System.err);
+                } catch (Exception ex) {
+                    ex.printStackTrace(System.err);
+                }
+            } else {
+                validateArgs(args, 3, new int[] {});
+
+                // [findRace] RaceServiceClient -fr <raceId>
+
+                try {
+                    List<ClientRaceDto> clientRaceDtos = clientRaceService.findRacesByDateAndCity(
+                            args[1], args[2]);
+
+                    for(int i = 0; i < clientRaceDtos.size(); i++) {
+                        System.out.println("id: " + clientRaceDtos.get(i).getRaceId()
+                        + " ciudad: " + clientRaceDtos.get(i).getCity()
+                        + " descripción: " + clientRaceDtos.get(i).getDescription()
+                        + " fecha/hora: " + clientRaceDtos.get(i).getDate().toString()
+                        + " parcitipantes máximos: " + clientRaceDtos.get(i).getMaxParticipants()
+                        + " participantes inscritos: " + clientRaceDtos.get(i).getNumberOfInscribed());
+                    }
+
+                } catch (InputValidationException ex) {
+                    ex.printStackTrace(System.err);
+                } catch (Exception ex) {
+                    ex.printStackTrace(System.err);
+                }
+
+            }
         }
 
     }
@@ -151,6 +193,7 @@ public class RaceServiceClient {
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
                 "    [findRace]      RaceServiceClient -fr <raceId>\n" +
+                "    [findRaces]      RaceServiceClient -fr <date> <city>\n" +
                 "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>\n" +
                 "    [addRace]       RaceServiceClient -ar <city, description, date, inscriptionPrice, maxParticipants>");
     }

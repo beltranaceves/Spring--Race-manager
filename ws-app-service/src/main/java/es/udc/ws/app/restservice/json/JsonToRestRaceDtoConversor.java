@@ -41,6 +41,35 @@ public class JsonToRestRaceDtoConversor {
         return racesNode;
     }
 
+    public static ObjectNode toObjectNodeComplete(RestRaceDto race) {
+
+        ObjectNode raceNode = JsonNodeFactory.instance.objectNode();
+
+        if (race.getRaceId() != null) {
+            raceNode.put("raceId", race.getRaceId());
+        }
+        raceNode.put("maxParticipants", race.getMaxParticipants()).
+                put("numberOfInscribed", race.getNumberOfInscribed()).
+                put("city", race.getCity()).
+                put("description", race.getDescription()).
+                put("date", race.getDate().toString()).
+                put("inscriptionPrice", race.getInscriptionPrice());
+
+        return raceNode;
+    }
+
+    public static ArrayNode toArrayNodeComplete(List<RestRaceDto> races) {
+
+        ArrayNode racesNode = JsonNodeFactory.instance.arrayNode();
+        for (int i = 0; i < races.size(); i++) {
+            RestRaceDto raceDto = races.get(i);
+            ObjectNode raceObject = toObjectNodeComplete(raceDto);
+            racesNode.add(raceObject);
+        }
+
+        return racesNode;
+    }
+
     public static RestRaceDto toServiceRaceDto(InputStream jsonRace) throws ParsingException {
         try {
             ObjectMapper objectMapper = ObjectMapperFactory.instance();

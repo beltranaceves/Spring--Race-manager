@@ -22,6 +22,8 @@ public interface ClientRaceService {
             ClientCreditCardDoesNotMatchException;
 
     public int findRace(Long raceId) throws InputValidationException, InstanceNotFoundException;
+
+    public List<ClientRaceDto> findRacesByDateAndCity(String date, String city) throws InputValidationException;
     
     public Long addRace(ClientRaceDto race) throws InputValidationException;
 }

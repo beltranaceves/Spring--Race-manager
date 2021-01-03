@@ -16,8 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -27,14 +31,22 @@ public class RacesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = ServletUtils.normalizePath(req.getPathInfo());
         if (path == null || path.length() == 0) {
-            String raceId, date, city;
+            String raceId, city;
+            String date = req.getParameter("date").split("T")[0];
+            if(date != null) {
+                List<Race> races = null;
+                city = req.getParameter("city");
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDateTime dateTime = LocalDate.parse(date, formatter).atStartOfDay();
 
-            if((date = req.getParameter("date")) != null) {
-                if ((city = req.getParameter("city")) != null) {
-                    //FIND BY DATE AND CITY
-                } else {
-                    //FIND ONLY BY DATE (NULl CITY)
+                    races = RaceServiceFactory.getService().findRacesByDateAndCity(dateTime, city);
+                } catch (InputValidationException e) {
+                    e.printStackTrace();
                 }
+                List<RestRaceDto> racesDto = RaceToRestRaceDtoConversor.toRestRaceDtosComplete(races);
+                ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+                        JsonToRestRaceDtoConversor.toArrayNodeComplete(racesDto), null);
             } else {
                 //FIND BY RACEID
                 if ((raceId = req.getParameter("raceId")) != null) {

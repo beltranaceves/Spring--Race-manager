@@ -55,6 +55,35 @@ public class RestClientRaceService implements ClientRaceService {
 
     }
 
+    public List<ClientRaceDto> findRacesByDateAndCity(String date, String city) throws InputValidationException {
+
+        try {
+            String cityEnconded = "";
+            if (city != null) {
+                cityEnconded = URLEncoder.encode(city, "UTF-8");
+            }
+            String endpointAddres = getEndpointAddress();
+            String dateEncoded = URLEncoder.encode(date, "UTF-8");
+            dateEncoded = date.split("T")[0];
+            String getRequest = endpointAddres + "races?date="
+                    + dateEncoded + "&city=" + cityEnconded;
+            HttpResponse response = Request.Get(getRequest).
+                    execute().returnResponse();
+
+            validateStatusCode(HttpStatus.SC_OK, response);
+
+            List<ClientRaceDto> clientRaceDtos = JsonToClientRaceDtoConversor.toClientRaceDtosComplete(response.getEntity()
+                    .getContent());
+            return clientRaceDtos;
+
+        } catch (InputValidationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public Long inscribeRace(Long raceId, String userEmail, String creditCardNumber)
             throws InstanceNotFoundException, InputValidationException, ClientAlreadyInscribedException,
             ClientInscriptionDateOverException, ClientMaxParticipantsException {

@@ -21,6 +21,25 @@ public class RaceToRestRaceDtoConversor {
         return raceDtos;
     }
 
+    public static RestRaceDto toRestRaceDtoComplete(Race race) {
+        RestRaceDto restRaceDto = new RestRaceDto(race.getRaceId(), race.getMaxParticipants(),
+                race.getNumberOfInscribed());
+        restRaceDto.setCity(race.getCity());
+        restRaceDto.setDescription(race.getRaceDescription());
+        restRaceDto.setInscriptionPrice(race.getInscriptionPrice());
+        restRaceDto.setDate(race.getScheduleDate());
+        return restRaceDto;
+    }
+
+    public static List<RestRaceDto> toRestRaceDtosComplete(List<Race> races) {
+        List<RestRaceDto> raceDtos = new ArrayList<>(races.size());
+        for (int i = 0; i < races.size(); i++) {
+            Race race = races.get(i);
+            raceDtos.add(toRestRaceDtoComplete(race));
+        }
+        return raceDtos;
+    }
+
     public static Race toRace(RestRaceDto race) {
         return new Race(race.getRaceId(), race.getCity(), race.getDescription(),
                 race.getInscriptionPrice(), race.getMaxParticipants(), race.getNumberOfInscribed(),

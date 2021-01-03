@@ -6,12 +6,19 @@ public class RestInscriptionDto {
     private Long raceId;
     private int dorsalNumber;
     private Boolean collected;
+    private String creditCardNumber;
+
 
     public RestInscriptionDto(Long inscriptionId, Long raceId, int dorsalNumber, Boolean collected) {
         this.inscriptionId = inscriptionId;
         this.raceId = raceId;
         this.dorsalNumber = dorsalNumber;
         this.collected = collected;
+    }
+
+    public RestInscriptionDto(Long inscriptionId, String creditCardNumber) {
+        this.inscriptionId = inscriptionId;
+        this.creditCardNumber = creditCardNumber;
     }
 
     public Long getInscriptionId() {

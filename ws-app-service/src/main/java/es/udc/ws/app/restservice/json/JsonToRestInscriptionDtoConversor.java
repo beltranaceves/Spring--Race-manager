@@ -53,11 +53,9 @@ public class JsonToRestInscriptionDtoConversor {
 
                 JsonNode inscriptionIdNode = inscriptionNode.get("inscriptionId");
                 Long inscriptionId = (inscriptionIdNode != null) ? inscriptionIdNode.longValue() : null;
-                Long raceId = inscriptionNode.get("raceId").longValue();
-                int dorsalNumber = inscriptionNode.get("dorsalNumber").intValue();
-                boolean collected = inscriptionNode.get("collected").booleanValue();
+                String creditCardNumber = inscriptionNode.get("creditCardNumber").textValue().trim();
 
-                return new RestInscriptionDto(inscriptionId, raceId, dorsalNumber, collected);
+                return new RestInscriptionDto(inscriptionId, creditCardNumber);
             }
 
         } catch (ParsingException ex) {

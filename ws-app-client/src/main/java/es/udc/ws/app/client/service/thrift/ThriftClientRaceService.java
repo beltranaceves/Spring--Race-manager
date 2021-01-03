@@ -88,9 +88,8 @@ public class ThriftClientRaceService implements ClientRaceService {
     }
 
     @Override
-    public int collectInscription(Long inscriptionId, String creditCardNumber) throws InputValidationException,
+    public void collectInscription(Long inscriptionId, String creditCardNumber) throws InputValidationException,
             InstanceNotFoundException, ClientDorsalAlreadyCollectedException, ClientCreditCardDoesNotMatchException {
-        return 0;
     }
 
     @Override

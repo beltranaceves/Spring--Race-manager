@@ -24,7 +24,6 @@ public class RestInscriptionDto {
     public Long getInscriptionId() {
         return inscriptionId;
     }
-
     public void setInscriptionId(Long inscriptionId) {
         this.inscriptionId = inscriptionId;
     }
@@ -32,7 +31,6 @@ public class RestInscriptionDto {
     public Long getRaceId() {
         return raceId;
     }
-
     public void setRaceId(Long raceId) {
         this.raceId = raceId;
     }
@@ -40,7 +38,6 @@ public class RestInscriptionDto {
     public int getDorsalNumber() {
         return dorsalNumber;
     }
-
     public void setDorsalNumber(int dorsalNumber) {
         this.dorsalNumber = dorsalNumber;
     }
@@ -48,10 +45,12 @@ public class RestInscriptionDto {
     public Boolean getCollected() {
         return collected;
     }
-
     public void setCollected(Boolean collected) {
         this.collected = collected;
     }
+
+    public String getCreditCardNumber() { return creditCardNumber; }
+    public void setCreditCardNumber(String creditCardNumber) { this.creditCardNumber = creditCardNumber; }
 
     @Override
     public int hashCode() {

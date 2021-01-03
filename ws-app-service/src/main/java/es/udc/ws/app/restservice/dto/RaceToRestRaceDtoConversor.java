@@ -2,6 +2,7 @@ package es.udc.ws.app.restservice.dto;
 
 import es.udc.ws.app.model.race.Race;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,5 +19,11 @@ public class RaceToRestRaceDtoConversor {
             raceDtos.add(toRestRaceDto(race));
         }
         return raceDtos;
+    }
+
+    public static Race toRace(RestRaceDto race) {
+        return new Race(race.getRaceId(), race.getCity(), race.getDescription(),
+                race.getInscriptionPrice(), race.getMaxParticipants(), race.getNumberOfInscribed(),
+                LocalDateTime.now(), race.getDate());
     }
 }

@@ -103,14 +103,15 @@ public class RaceServiceClient {
 
         } else if ("-ar".equalsIgnoreCase(args[0])){
 
-            validateArgs(args, 5, new int[] {3, 4});
+            validateArgs(args, 6, new int[] {4, 5});
 
             // [addRace] RaceServiceClient -ar <city> <description> <date> <inscriptionPrice> <maxParticipants>
             
             try {
-                Long raceId = clientRaceService.addRace(new ClientRaceDto(args[1],
-                		args[2], LocalDateTime.parse(args[3]),
-                		Double.parseDouble(args[4]), Integer.parseInt(args[5]))
+                ClientRaceDto raceDto = new ClientRaceDto(args[1],
+                        args[2], LocalDateTime.parse(args[3]),
+                        Double.parseDouble(args[4]), Integer.parseInt(args[5]));
+                Long raceId = clientRaceService.addRace(raceDto
                 		);
 
                 System.out.println("Carrera " + raceId + " añadida correctamente");

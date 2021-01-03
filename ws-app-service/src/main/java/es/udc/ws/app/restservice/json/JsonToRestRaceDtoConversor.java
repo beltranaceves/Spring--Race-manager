@@ -1,10 +1,17 @@
 package es.udc.ws.app.restservice.json;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import es.udc.ws.app.restservice.dto.RestRaceDto;
+import es.udc.ws.util.json.ObjectMapperFactory;
+import es.udc.ws.util.json.exceptions.ParsingException;
 
+import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JsonToRestRaceDtoConversor {
@@ -32,6 +39,39 @@ public class JsonToRestRaceDtoConversor {
         }
 
         return racesNode;
+    }
+
+    public static RestRaceDto toServiceRaceDto(InputStream jsonRace) throws ParsingException {
+        try {
+            ObjectMapper objectMapper = ObjectMapperFactory.instance();
+            JsonNode rootNode = objectMapper.readTree(jsonRace);
+
+            if (rootNode.getNodeType() != JsonNodeType.OBJECT) {
+                throw new ParsingException("Unrecognized JSON (object expected)");
+            } else {
+                ObjectNode raceObject = (ObjectNode) rootNode;
+
+                JsonNode raceIdNode = raceObject.get("raceId");
+                Long raceId = (raceIdNode != null) ? raceIdNode.longValue() : null;
+
+                String city = raceObject.get("city").textValue().trim();
+                String description = raceObject.get("description").textValue().trim();
+                LocalDateTime date =  LocalDateTime.parse(raceObject.get("date").asText());
+                Double inscriptionPrice = raceObject.get("inscriptionPrice").asDouble();
+                int maxParticipants = raceObject.get("maxParticipants").asInt();
+                RestRaceDto restRaceDto = new RestRaceDto(raceId, maxParticipants, 0);
+                restRaceDto.setCity(city);
+                restRaceDto.setDescription(description);
+                restRaceDto.setDate(date);
+                restRaceDto.setInscriptionPrice(inscriptionPrice);
+
+                return restRaceDto;
+            }
+        } catch (ParsingException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new ParsingException(e);
+        }
     }
 
 }

@@ -33,3 +33,19 @@ mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexe
 mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-f 'user6@udc.es'"
 
 mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-f 'user1'"
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-d 1 '0123456789222222'" 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-d 1 '0123456789111111'" 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-d 1 '0123456789111111'" 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-d 1 '0123456789'" 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-d 9 '0123456789111111'" 
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-fr 2" 
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-fr 9" 

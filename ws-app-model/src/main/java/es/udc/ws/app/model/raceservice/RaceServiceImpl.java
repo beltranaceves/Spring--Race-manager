@@ -38,7 +38,7 @@ public class RaceServiceImpl implements RaceService{
         PropertyValidator.validateMandatoryString("city", race.getCity());
         PropertyValidator.validateMandatoryString("raceDescription", race.getRaceDescription());
         PropertyValidator.validateDouble("inscriptionPrice", race.getInscriptionPrice(), 0, MAX_INSCRIPTION_PRICE);
-        PropertyValidatorAditional.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
+        //PropertyValidatorAditional.validateInt("maxParticipants", race.getMaxParticipants(), 0, MAX_NUMBER_OF_PARTICIPANTS);
 
     }
 

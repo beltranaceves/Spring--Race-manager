@@ -3,6 +3,8 @@
 Indicamos las funcionalidades que implementó cada alumno para la segunda iteración:
 
 Beltrán Aceves Gil (alumno 1) -> Funcionalidades 1 y 3.
+**: Para la funcionalidad 3, se permite no introducir una ciudad(no confundir con ciudad vacia -> '') y que la búsqueda sea solo por fecha,
+como indica el PDF original de la práctica.
 Melisa Barro Hermida (alumno 2) -> Funcionalidades 4 y 5.
 **NOTA: Para la funcionalidad 4, al añadir una inscripción con el método POST, no se 
 incluye la cabecera Location con la URL del recurso creado, ya que no se implementan

@@ -32,8 +32,9 @@ public class RacesServlet extends HttpServlet {
         String path = ServletUtils.normalizePath(req.getPathInfo());
         if (path == null || path.length() == 0) {
             String raceId, city;
-            String date = req.getParameter("date").split("T")[0];
-            if(date != null) {
+            raceId = req.getParameter("raceId");
+            if(raceId == null) {
+                String date = req.getParameter("date").split("T")[0];
                 List<Race> races = null;
                 city = req.getParameter("city");
                 try {

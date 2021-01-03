@@ -1,10 +1,24 @@
-INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña','10Km. Campus Elviña', 10, 2, NOW(), '2021-08-15 11:00', 0);
-INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('Santiago','5Km. Plaza Obradoiro', 5, 100, NOW(), '2021-08-25 11:00', 0);
-INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña', '7Km. Playa Riazor', 7, 200, NOW(), '2021-10-15 11:00', 0);
-INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña', '20Km. Obelisco', 20, 300, NOW(), '2021-10-25 11:00', 0);
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-ar 'A Coruña' '10Km. Campus Elviña' 2021-08-15T11:00 10 2"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-ar 'Santiago' '5Km. Plaza Obradoiro' 2021-08-25T11:00 5 10"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-ar 'A Coruña' '7Km. Playa Riazor' 2021-10-15T11:00 7 200"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-ar 'A Coruña' '20Km. Obelisco' 2021-10-25T11:00 20 300"
 
 
 UPDATE Race SET scheduleDate='2020-11-25 10:00' WHERE raceId=4;
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-frs 2021-12-15 'A Coruña'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-frs 2021-08-31 'A Coruña'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-frs 2021-07-31 'Santiago'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-frs 2020-06-24 'Santiago'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-frs 2021-08-31"
 
 
 mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 1 'user1@udc.es' '0123456789111111'"

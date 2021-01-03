@@ -42,6 +42,9 @@ public class JsonToClientExceptionConversor {
                     case "CreditCardDoesNotMatch":
                         return toCreditCardDoesNotMatchException(rootNode);
 
+                    case "InstanceNotFound":
+                        return toInstanceNotFoundException(rootNode);
+
                     default:
                         throw new ParsingException("Unrecognized error type: " + errorType);
                 }

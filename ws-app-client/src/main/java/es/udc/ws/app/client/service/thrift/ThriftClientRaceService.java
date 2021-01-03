@@ -2,6 +2,7 @@ package es.udc.ws.app.client.service.thrift;
 
 import es.udc.ws.app.client.service.ClientRaceService;
 import es.udc.ws.app.client.service.dto.ClientInscriptionDto;
+import es.udc.ws.app.client.service.dto.ClientRaceDto;
 import es.udc.ws.app.client.service.exceptions.*;
 import es.udc.ws.app.thrift.ThriftInputValidationException;
 import es.udc.ws.app.thrift.ThriftInstanceNotFoundException;

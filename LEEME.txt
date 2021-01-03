@@ -4,4 +4,9 @@ Indicamos las funcionalidades que implementó cada alumno para la segunda iterac
 
 Beltrán Aceves Gil (alumno 1) -> Funcionalidades 1 y 3.
 Melisa Barro Hermida (alumno 2) -> Funcionalidades 4 y 5.
+**NOTA: Para la funcionalidad 4, al añadir una inscripción con el método POST, no se 
+incluye la cabecera Location con la URL del recurso creado, ya que no se implementan
+métodos de acceso a inscripciones individuales. En su lugar, se incluye en el cuerpo
+de la respuesta toda la información del recurso creado para que el cliente la pueda
+consultar en el mismo momento.
 Dimitry Demyanov Prishtchepa (alumno 3) -> Funcionalidades 2 y 6.

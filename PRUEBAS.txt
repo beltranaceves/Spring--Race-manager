@@ -1,0 +1,35 @@
+INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña','10Km. Campus Elviña', 10, 2, NOW(), '2021-08-15 11:00', 0);
+INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('Santiago','5Km. Plaza Obradoiro', 5, 100, NOW(), '2021-08-25 11:00', 0);
+INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña', '7Km. Playa Riazor', 7, 200, NOW(), '2021-10-15 11:00', 0);
+INSERT INTO Race (city, raceDescription, inscriptionPrice, maxParticipants, creationDate, scheduleDate, numberOfInscribed) VALUES ('A Coruña', '20Km. Obelisco', 20, 300, NOW(), '2021-10-25 11:00', 0);
+
+
+UPDATE Race SET scheduleDate='2020-11-25 10:00' WHERE raceId=4;
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 1 'user1@udc.es' '0123456789111111'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 1 'user2@udc.es' '0123456789222222'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 2 'user2@udc.es' '0123456789222222'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 2 'user1@udc.es' '0123456789111111'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 1 'user3@udc.es' '0123456789333333'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 4 'user3@udc.es' '0123456789333333'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 2 'user1@udc.es' '0123456789111111'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 2 'user4' '0123456789444444'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 2 'user4@udc.es' '0123456789'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-reg 9 'user4@udc.es' '0123456789444444'"
+
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-f 'user1@udc.es'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-f 'user6@udc.es'"
+
+mvn exec:java -Dexec.mainClass="es.udc.ws.app.client.ui.RaceServiceClient" -Dexec.args="-f 'user1'"

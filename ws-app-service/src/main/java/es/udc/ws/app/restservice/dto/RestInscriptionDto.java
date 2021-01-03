@@ -6,6 +6,8 @@ public class RestInscriptionDto {
     private Long raceId;
     private int dorsalNumber;
     private Boolean collected;
+    private String creditCardNumber;
+
 
     public RestInscriptionDto(Long inscriptionId, Long raceId, int dorsalNumber, Boolean collected) {
         this.inscriptionId = inscriptionId;
@@ -14,10 +16,14 @@ public class RestInscriptionDto {
         this.collected = collected;
     }
 
+    public RestInscriptionDto(Long inscriptionId, String creditCardNumber) {
+        this.inscriptionId = inscriptionId;
+        this.creditCardNumber = creditCardNumber;
+    }
+
     public Long getInscriptionId() {
         return inscriptionId;
     }
-
     public void setInscriptionId(Long inscriptionId) {
         this.inscriptionId = inscriptionId;
     }
@@ -25,7 +31,6 @@ public class RestInscriptionDto {
     public Long getRaceId() {
         return raceId;
     }
-
     public void setRaceId(Long raceId) {
         this.raceId = raceId;
     }
@@ -33,7 +38,6 @@ public class RestInscriptionDto {
     public int getDorsalNumber() {
         return dorsalNumber;
     }
-
     public void setDorsalNumber(int dorsalNumber) {
         this.dorsalNumber = dorsalNumber;
     }
@@ -41,10 +45,12 @@ public class RestInscriptionDto {
     public Boolean getCollected() {
         return collected;
     }
-
     public void setCollected(Boolean collected) {
         this.collected = collected;
     }
+
+    public String getCreditCardNumber() { return creditCardNumber; }
+    public void setCreditCardNumber(String creditCardNumber) { this.creditCardNumber = creditCardNumber; }
 
     @Override
     public int hashCode() {

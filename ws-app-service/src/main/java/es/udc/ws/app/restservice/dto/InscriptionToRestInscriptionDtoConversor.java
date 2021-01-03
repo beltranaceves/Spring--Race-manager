@@ -22,7 +22,6 @@ public class InscriptionToRestInscriptionDtoConversor {
     }
 
     public static Inscription toInscription (RestInscriptionDto inscription) {
-        return new Inscription(inscription.getInscriptionId(), inscription.getRaceId(),
-                inscription.getDorsalNumber(), inscription.getCollected());
+        return new Inscription(inscription.getInscriptionId(), inscription.getCreditCardNumber());
     }
 }

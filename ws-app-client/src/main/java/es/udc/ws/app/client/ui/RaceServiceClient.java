@@ -72,10 +72,9 @@ public class RaceServiceClient {
             // [deliverNumber]      RaceServiceClient -d <inscriptionId> <creditCardNumber>
 
             try{
-                int dorsalNumber = clientRaceService.collectInscription(Long.parseLong(args[1]), args[2]);
+                clientRaceService.collectInscription(Long.parseLong(args[1]), args[2]);
 
-                System.out.println("Dorsal number: " + dorsalNumber + " collected successfully by racer with " +
-                        " credit card number: " + args[2]);
+                System.out.println("Dorsal collected");
 
             } catch (InputValidationException | ClientDorsalAlreadyCollectedException |
                     ClientCreditCardDoesNotMatchException | InstanceNotFoundException ex) {
@@ -193,8 +192,8 @@ public class RaceServiceClient {
                 "    [register]      RaceServiceClient -reg <raceId> <userEmail> <creditCardNumber>\n" +
                 "    [find]          RaceServiceClient -f <userEmail>\n" +
                 "    [findRace]      RaceServiceClient -fr <raceId>\n" +
-                "    [findRaces]      RaceServiceClient -fr <date> <city>\n" +
-                "    [deliverNumber] RaceServiceClient -c <inscriptionId> <creditCardNumber>\n" +
+                "    [findRaces]     RaceServiceClient -frs <date> <city>\n" +
+                "    [deliverNumber] RaceServiceClient -d <inscriptionId> <creditCardNumber>\n" +
                 "    [addRace]       RaceServiceClient -ar <city, description, date, inscriptionPrice, maxParticipants>");
     }
 

@@ -49,24 +49,17 @@ public class RacesServlet extends HttpServlet {
                         JsonToRestRaceDtoConversor.toArrayNodeComplete(racesDto), null);
             } else {
                 //FIND BY RACEID
-                if ((raceId = req.getParameter("raceId")) != null) {
-                    Race race;
-                    try{
-                        race = RaceServiceFactory.getService().findRace(Long.parseLong(raceId));
-                    } catch (InstanceNotFoundException ex) {
-                        ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
-                                JsonToExceptionConversor.toInstanceNotFoundException(ex), null);
-                        return;
-                    }
-                    RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
-                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
-                            JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
-                } else {
-                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,
-                            JsonToExceptionConversor.toInputValidationException(
-                                    new InputValidationException("Invalid request: " + "invalid path")), null);
+                Race race;
+                try{
+                    race = RaceServiceFactory.getService().findRace(Long.parseLong(req.getParameter("raceId")));
+                } catch (InstanceNotFoundException ex) {
+                    ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_NOT_FOUND,
+                            JsonToExceptionConversor.toInstanceNotFoundException(ex), null);
                     return;
                 }
+                RestRaceDto raceDto = RaceToRestRaceDtoConversor.toRestRaceDto(race);
+                ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_OK,
+                        JsonToRestRaceDtoConversor.toObjectNode(raceDto), null);
             }
         } else {
             ServletUtils.writeServiceResponse(resp, HttpServletResponse.SC_BAD_REQUEST,

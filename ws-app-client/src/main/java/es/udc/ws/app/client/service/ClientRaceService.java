@@ -17,7 +17,7 @@ public interface ClientRaceService {
             throws InstanceNotFoundException, InputValidationException, ClientAlreadyInscribedException,
             ClientInscriptionDateOverException, ClientMaxParticipantsException;
 
-    public int collectInscription(Long inscriptionId, String creditCardNumber)
+    public void collectInscription(Long inscriptionId, String creditCardNumber)
             throws InputValidationException, InstanceNotFoundException, ClientDorsalAlreadyCollectedException,
             ClientCreditCardDoesNotMatchException;
 

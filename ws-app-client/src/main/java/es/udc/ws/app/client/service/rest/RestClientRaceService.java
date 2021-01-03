@@ -113,25 +113,21 @@ public class RestClientRaceService implements ClientRaceService {
 
     }
 
-    public int collectInscription(Long inscriptionId, String creditCardNumber) throws InputValidationException,
+    public void collectInscription(Long inscriptionId, String creditCardNumber) throws InputValidationException,
             InstanceNotFoundException, ClientDorsalAlreadyCollectedException, ClientCreditCardDoesNotMatchException {
 
         try {
 
-            HttpResponse response = Request.Put(getEndpointAddress() + "inscriptions").
-                    bodyForm(
-                            Form.form().
-                                    add("inscriptionId", Long.toString(inscriptionId)).
-                                    add("creditCardNumber", creditCardNumber).
-                                    build()).
-                    execute().returnResponse();
+            HttpResponse response = Request.Put(getEndpointAddress() + "inscriptions/" + inscriptionId).
+                    bodyStream(toInputStreamInscription(new ClientInscriptionDto(inscriptionId, creditCardNumber)),
+                            ContentType.create("application/json")).execute().returnResponse();
 
-            validateStatusCode(HttpStatus.SC_CREATED, response);
+            validateStatusCode(HttpStatus.SC_NO_CONTENT, response);
 
-            return JsonToClientInscriptionDtoConversor.toClientInscriptionDto(response.getEntity().getContent()).getDorsalNumber();
+            //return JsonToClientInscriptionDtoConversor.toClientInscriptionDto(response.getEntity().getContent()).getDorsalNumber();
 
         } catch (InputValidationException | InstanceNotFoundException | ClientDorsalAlreadyCollectedException |
-                    ClientCreditCardDoesNotMatchException e) {
+                ClientCreditCardDoesNotMatchException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -232,6 +228,23 @@ public class RestClientRaceService implements ClientRaceService {
             ObjectMapper objectMapper = ObjectMapperFactory.instance();
             objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream,
                     JsonToClientRaceDtoConversor.toObjectNode(race));
+
+            return new ByteArrayInputStream(outputStream.toByteArray());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private InputStream toInputStreamInscription(ClientInscriptionDto inscription) {
+
+        try {
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectMapper objectMapper = ObjectMapperFactory.instance();
+            objectMapper.writer(new DefaultPrettyPrinter()).writeValue(outputStream,
+                    JsonToClientInscriptionDtoConversor.toObjectNode(inscription));
 
             return new ByteArrayInputStream(outputStream.toByteArray());
 

@@ -45,6 +45,11 @@ public class Inscription{
 		this.collected = collected;
 	}
 
+	public Inscription(Long inscriptionId, String creditCardNumber) {
+		this.inscriptionId = inscriptionId;
+		this.creditCardNumber = creditCardNumber;
+	}
+
 	public Long getInscriptionId() {
 		return inscriptionId;
 	}

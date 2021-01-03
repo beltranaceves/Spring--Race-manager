@@ -516,12 +516,11 @@ public class RaceServiceTest {
     public void testFindRaceByDate() throws InputValidationException {
         Race race1 = getValidRace("Vigo", (long) 3);
         Race race2 = getValidRace("Cangas", (long) -3);
-        race2.setScheduleDate(LocalDateTime.now().minusDays(2));
         try
         {
             race1 = raceService.addRace(race1);
             race2 = raceService.addRace(race2);
-            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now(),null);
+            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now().plusDays(2),null);
             assertEquals(races.get(0).getRaceId(), race1.getRaceId());
         } finally {
             // Clear Database
@@ -544,7 +543,7 @@ public class RaceServiceTest {
         try {
             race1 = raceService.addRace(race1);
             race2 = raceService.addRace(race2);
-            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now(), "Vigo");
+            List<Race> races = raceService.findRacesByDateAndCity(LocalDateTime.now().plusDays(12), "Vigo");
             assertEquals(races.get(0).getRaceId(), race1.getRaceId());
         } finally {
             // Clear Database

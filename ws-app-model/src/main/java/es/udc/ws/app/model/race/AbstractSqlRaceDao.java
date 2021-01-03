@@ -131,7 +131,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
         if (inputCity != null) {
 
             /* Create "queryString". */
-            queryString += " WHERE scheduleDate > ? ";
+            queryString += " WHERE scheduleDate < ? AND scheduleDate > NOW()";
             queryString += " AND city = ? ";
             queryString += " ORDER BY city, creationDate";
 
@@ -179,7 +179,7 @@ public abstract class AbstractSqlRaceDao implements SqlRaceDao {
             }
         } else {
             /* Create "queryString". */
-            queryString += " WHERE scheduleDate > (?) ";
+            queryString += " WHERE scheduleDate > (?) AND scheduleDate > NOW()";
 
             queryString += " ORDER BY creationDate";
 

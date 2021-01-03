@@ -44,6 +44,9 @@ public class ClientInscriptionDto {
         this.collected = collected;
     }
 
+    public String getCreditCardNumber() { return creditCardNumber; }
+    public void setCreditCardNumber(String creditCardNumber) { this.creditCardNumber = creditCardNumber; }
+
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -1,5 +1,6 @@
 package es.udc.ws.app.client.service.rest.json;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -83,5 +85,16 @@ public class JsonToClientInscriptionDtoConversor {
         }
     }
 
+    public static ObjectNode toObjectNode(ClientInscriptionDto inscription) throws IOException {
+
+        ObjectNode inscriptionObject = JsonNodeFactory.instance.objectNode();
+
+        if (inscription.getInscriptionId() != null) {
+            inscriptionObject.put("inscriptionId", inscription.getInscriptionId());
+        }
+        inscriptionObject.put("creditCardNumber", inscription.getCreditCardNumber());
+
+        return inscriptionObject;
+    }
 }
 

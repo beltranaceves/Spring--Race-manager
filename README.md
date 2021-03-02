@@ -1,5 +1,12 @@
 # Running the project example
 ---------------------------------------------------------------------
+Race manager server and CLI client:
+
+   - Create with name, city, date, max participans and ticket price
+
+   - Search for races by date and/or city
+   
+   - Runners can inscribe themselves in a race/collect their dorsal number/get all their inscriptions
 
 ## Running the ws-app service with Maven/Jetty.
 
